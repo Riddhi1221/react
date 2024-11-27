@@ -13,10 +13,13 @@ import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-const Login = () => {
+const Signup = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((prev) => !prev);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -24,7 +27,8 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Form Submitted");
+    // Add your submit logic here
+    console.log("Signup Form Submitted");
   };
 
   return (
@@ -34,12 +38,13 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(135deg, #ff9a9e, #fecfef)", // Warm gradient background
+        background: "linear-gradient(135deg, #ff7e5f, #feb47b)", // Gradient background
         animation: "backgroundShift 8s ease infinite alternate",
         "@keyframes backgroundShift": {
           "0%": { backgroundPosition: "0% 50%" },
           "100%": { backgroundPosition: "100% 50%" },
         },
+        overflow: "hidden",
       }}
     >
       <Box
@@ -68,21 +73,21 @@ const Login = () => {
             textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
           }}
         >
-          Welcome Back
+          Create Account
         </Typography>
         <Typography
           variant="body2"
           align="center"
           sx={{ color: "#555", mb: 3 }}
         >
-          Log in to access your account
+          Sign up to get started
         </Typography>
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-           {/* Username Field */}
-           <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
-            <AccountCircle sx={{ color: "#ff6f61", mr: 1 }} />
+          {/* Username Field */}
+          <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
+            <AccountCircle sx={{ color: "#ff7e5f", mr: 1 }} />
             <TextField
               id="username-input"
               label="Username"
@@ -91,9 +96,10 @@ const Login = () => {
               required
             />
           </Box>
+
           {/* Email Field */}
           <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
-            <EmailIcon sx={{ color: "#6a11cb", mr: 1 }} />
+            <EmailIcon sx={{ color: "#feb47b", mr: 1 }} />
             <TextField
               id="email-input"
               label="Email"
@@ -105,7 +111,7 @@ const Login = () => {
           </Box>
 
           {/* Password Input */}
-          <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
+          <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
             <InputLabel htmlFor="password-input">Password</InputLabel>
             <Input
               id="password-input"
@@ -121,6 +127,33 @@ const Login = () => {
                     onMouseDown={handleMouseDownPassword}
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+          </FormControl>
+
+          {/* Confirm Password Input */}
+          <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
+            <InputLabel htmlFor="confirm-password-input">
+              Confirm Password
+            </InputLabel>
+            <Input
+              id="confirm-password-input"
+              type={showConfirmPassword ? "text" : "password"}
+              required
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label={
+                      showConfirmPassword
+                        ? "Hide confirm password"
+                        : "Show confirm password"
+                    }
+                    onClick={handleClickShowConfirmPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               }
@@ -145,7 +178,7 @@ const Login = () => {
               },
             }}
           >
-            Login
+            Sign Up
           </Button>
         </form>
       </Box>
@@ -153,4 +186,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;

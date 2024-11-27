@@ -6,22 +6,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import { Drawer as MuiDrawer, Typography, Toolbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { SpaceDashboard, Menu, Category, FolderCopy, QuestionMark, Login } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+
+// Import the missing components
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
-import {
-  SpaceDashboard,
-  Menu,
-  Category,
-  FolderCopy,
-  QuestionMark,
-  Login,
-} from "@mui/icons-material";
-import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -51,7 +44,13 @@ let pages = [
     path: "/admin/login",
     icon: <Login />,
   },
+  {
+    name: "Signup",
+    path: "/admin/signup",
+    icon: <Login />,
+  },
 ];
+
 function Drawer(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -77,12 +76,38 @@ function Drawer(props) {
       <Toolbar />
       <Divider />
       <List>
-        {pages.map((text, index) => (
-          <Link key={index} to={text.path}>
+        {pages.map((page, index) => (
+          <Link key={index} to={page.path} style={{ textDecoration: "none" }}>
             <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>{text.icon}</ListItemIcon>
-                <ListItemText primary={text.name} />
+              <ListItemButton
+                sx={{
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0", // Set hover background color
+                  },
+                }}
+              >
+                <ListItemIcon
+                  sx={{
+                    color: "black", // Default color for icons
+                    "&:hover": {
+                      color: "black", // Icon color on hover
+                    },
+                  }}
+                >
+                  {page.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={page.name}
+                  sx={{
+                    fontSize: "1rem",
+                    fontWeight: "bold",
+                    color: "black", // Default text color is black
+                    textTransform: "uppercase",
+                    "&:hover": {
+                      color: "black", // Text color stays black on hover
+                    },
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -91,7 +116,6 @@ function Drawer(props) {
     </div>
   );
 
-  // Remove this const when copying and pasting into your project.
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -100,33 +124,44 @@ function Drawer(props) {
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ backgroundColor:"red",display:"flex", 
+        sx={{
+          background: "#3498db",
+          display: "flex",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
+          ml: { sm: `${drawerWidth}px}` },
         }}
       >
-        <Toolbar sx={{justifyContent:"space-between"}}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2 , display: { sm: "none" } }}
+            sx={{
+              mr: 2,
+              display: { sm: "none" },
+              color: "#fff",
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            }}
           >
             <Menu />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          </IconButton >
+          <Typography variant="h6" noWrap component="div" sx={{ color: "#fff"}}>
             Admin Panel
           </Typography>
-        <a href="/login"><Login /></a>
         </Toolbar>
       </AppBar>
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+          backgroundColor: "#2c3e50",
+        }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <MuiDrawer
           container={container}
           variant="temporary"
@@ -141,6 +176,8 @@ function Drawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              backgroundColor: "#34495e",
+              color: "#fff",
             },
           }}
         >
@@ -153,6 +190,8 @@ function Drawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
+              backgroundColor: "rgb(90, 129, 239)",
+              color: "#fff",
             },
           }}
           open
@@ -166,6 +205,7 @@ function Drawer(props) {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          backgroundColor: "#ecf0f1",
         }}
       >
         <Toolbar />
@@ -176,10 +216,6 @@ function Drawer(props) {
 }
 
 Drawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * Remove this when copying and pasting into your project.
-   */
   window: PropTypes.func,
 };
 
