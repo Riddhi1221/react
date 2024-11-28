@@ -8,8 +8,6 @@ import { Drawer as MuiDrawer, Typography, Toolbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { SpaceDashboard, Menu, Category, FolderCopy, QuestionMark, Login } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-
-// Import the missing components
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -72,27 +70,20 @@ function Drawer(props) {
   };
 
   const drawer = (
-    <div>
+    <div >
       <Toolbar />
       <Divider />
       <List>
         {pages.map((page, index) => (
-          <Link key={index} to={page.path} style={{ textDecoration: "none" }}>
-            <ListItem disablePadding>
-              <ListItemButton
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#f0f0f0", // Set hover background color
-                  },
-                }}
-              >
+          <Link key={index} to={page.path} style={{ textDecoration: "none"}}>
+            <ListItem disablePadding sx={{color:"#fff","&:hover": {
+                    backgroundColor: "#f0f0f0", 
+                    color:"black"
+                  },}}>
+              <ListItemButton>
                 <ListItemIcon
                   sx={{
-                    color: "black", // Default color for icons
-                    "&:hover": {
-                      color: "black", // Icon color on hover
-                    },
-                  }}
+                    color: "#fff"}}
                 >
                   {page.icon}
                 </ListItemIcon>
@@ -101,10 +92,10 @@ function Drawer(props) {
                   sx={{
                     fontSize: "1rem",
                     fontWeight: "bold",
-                    color: "black", // Default text color is black
+                    color: "#fff", 
                     textTransform: "uppercase",
                     "&:hover": {
-                      color: "black", // Text color stays black on hover
+                      color: "black", 
                     },
                   }}
                 />
@@ -125,13 +116,13 @@ function Drawer(props) {
       <AppBar
         position="fixed"
         sx={{
-          background: "#3498db",
+          background: "#3498dbp",
           display: "flex",
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px}` },
         }}
       >
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar sx={{ justifyContent: "space-between", background:"rgb(121, 121, 122)" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -140,7 +131,8 @@ function Drawer(props) {
             sx={{
               mr: 2,
               display: { sm: "none" },
-              color: "#fff",
+              color: "#333",
+              
               "&:hover": {
                 backgroundColor: "transparent",
               },
@@ -169,7 +161,7 @@ function Drawer(props) {
           onTransitionEnd={handleDrawerTransitionEnd}
           onClose={handleDrawerClose}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true, 
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -190,7 +182,7 @@ function Drawer(props) {
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
-              backgroundColor: "rgb(90, 129, 239)",
+              backgroundColor: "rgb(121, 121, 122)",
               color: "#fff",
             },
           }}

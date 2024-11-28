@@ -7,7 +7,7 @@ import QA from "./Pages/QA";
 import { Routes, Route } from "react-router-dom";
 import NoFound from "./Pages/NoFound";
 import Login from "./Pages/login";
-import Singup from "./Pages/Singup";
+import Signup from "./Pages/Signup";
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
         <Route path="subcategory" element={<SubCategory />} />
         <Route path="qa" element={<QA />} />
         <Route path="login" element={<Login />} />
-        <Route path="singup" element={<Singup />} />
+        <Route path="signup" element={<Signup />} />
         <Route path="*" element={<NoFound />} />
 
       </Route>
