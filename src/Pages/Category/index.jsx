@@ -1,22 +1,10 @@
 import React, { useState } from "react";
 import Drawer from '../../Components/Drawer'
-import {
-  Box,
-  Button,
-  TextField,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Box,Button,TextField,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography,} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
+import Switch from '@mui/material/Switch';
 
 const Category = () => {
   const [search, setSearch] = useState("");
@@ -45,6 +33,7 @@ const Category = () => {
   const filteredCategories = categories.filter((category) =>
     category.name.toLowerCase().includes(search.toLowerCase())
   );
+  const label = { inputProps: { 'aria-label': 'Color switch demo' } };
 
   return (
     <Drawer>
@@ -92,7 +81,7 @@ const Category = () => {
                 <TableRow key={category.id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.status}</TableCell>
+                  <TableCell><Switch {...label} defaultChecked color="default" /></TableCell>
                   <TableCell align="center">
                     <IconButton
                       color="error"
@@ -106,7 +95,7 @@ const Category = () => {
                       color="primary"
                       onClick={() => handleUpdate(category.id)}
                     >
-                      <EditIcon />
+                      <EditIcon sx={{color:"#65C466"}} />
                     </IconButton>
                   </TableCell>
                 </TableRow>

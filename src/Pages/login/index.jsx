@@ -1,31 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import Input from "@mui/material/Input";
-import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import EmailIcon from "@mui/icons-material/Email";
+import { useFormik } from "formik";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  let navigate = useNavigate();
 
+  
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
+  const handleMouseDownPassword = (event) => event.preventDefault();
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log("Form Submitted");
-  };
+  
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+  
+    onSubmit: async (values, { setSubmitting }) => {
+      try {
+        console.log(values);
+        
+        const response = await axios.post(
+          "https://interviewhub-3ro7.onrender.com/admin/login",
+          values
+        );
+        console.log("Login successful:", response.data);
+        navigate("/admin");
+       
+      } catch (error) {
+        console.error("Login failed:",  error.message);
+     
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   return (
     <Box
@@ -34,12 +55,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(135deg, #ff9a9e, #fecfef)", // Warm gradient background
-        animation: "backgroundShift 8s ease infinite alternate",
-        "@keyframes backgroundShift": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "100%": { backgroundPosition: "100% 50%" },
-        },
+        background: "linear-gradient(135deg, #ff9a9e, #fecfef)",
       }}
     >
       <Box
@@ -47,26 +63,16 @@ const Login = () => {
           width: 400,
           p: 5,
           borderRadius: 3,
-          boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)", // Subtle shadow
-          backgroundColor: "rgba(255, 255, 255, 0.85)", // Semi-transparent card
-          backdropFilter: "blur(10px)", // Glass effect
-          animation: "fadeIn 1.5s",
-          "@keyframes fadeIn": {
-            "0%": { opacity: 0 },
-            "100%": { opacity: 1 },
-          },
+          boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.85)",
+          backdropFilter: "blur(10px)",
         }}
       >
-        {/* Title */}
         <Typography
           variant="h4"
           align="center"
           gutterBottom
-          sx={{
-            fontWeight: "bold",
-            color: "#333",
-            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.2)",
-          }}
+          sx={{ fontWeight: "bold", color: "#333" }}
         >
           Welcome Back
         </Typography>
@@ -78,52 +84,49 @@ const Login = () => {
           Log in to access your account
         </Typography>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit}>
-           {/* Username Field */}
-           <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
-            <AccountCircle sx={{ color: "#ff6f61", mr: 1 }} />
-            <TextField
-              id="username-input"
-              label="Username"
-              variant="standard"
-              fullWidth
-              required
-            />
-          </Box>
+        <form onSubmit={formik.handleSubmit}>
           {/* Email Field */}
           <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
             <EmailIcon sx={{ color: "#6a11cb", mr: 1 }} />
             <TextField
-              id="email-input"
+              id="email"
+              name="email"
               label="Email"
               variant="standard"
               fullWidth
-              type="email"
-              required
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
             />
           </Box>
 
-          {/* Password Input */}
+          {/* Password Field */}
           <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
-            <InputLabel htmlFor="password-input">Password</InputLabel>
-            <Input
-              id="password-input"
+            <TextField
+              id="password"
+              name="password"
+              label="Password"
               type={showPassword ? "text" : "password"}
-              required
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
+              fullWidth
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </FormControl>
 
@@ -131,21 +134,19 @@ const Login = () => {
           <Button
             type="submit"
             variant="contained"
+            fullWidth
+            disabled={formik.isSubmitting}
             sx={{
-              width: "100%",
               py: 1.5,
               fontWeight: "bold",
-              textTransform: "uppercase",
               background: "linear-gradient(90deg, #43cea2, #185a9d)",
               color: "#fff",
-              boxShadow: "0px 4px 16px rgba(67, 206, 162, 0.4)",
               "&:hover": {
                 background: "linear-gradient(90deg, #185a9d, #43cea2)",
-                boxShadow: "0px 6px 20px rgba(67, 206, 162, 0.6)",
               },
             }}
           >
-            Login
+            {formik.isSubmitting ? "Logging in..." : "Login"}
           </Button>
         </form>
       </Box>

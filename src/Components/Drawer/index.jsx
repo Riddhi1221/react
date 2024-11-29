@@ -6,13 +6,14 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import { Drawer as MuiDrawer, Typography, Toolbar } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
-import { SpaceDashboard, Menu, Category, FolderCopy, QuestionMark, Login } from "@mui/icons-material";
+import { SpaceDashboard, Menu, Category, FolderCopy, QuestionMark, Login ,PersonAdd , Logout} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Image from '../../images/interview.png'
 
 const drawerWidth = 240;
 
@@ -37,16 +38,16 @@ let pages = [
     path: "/admin/qa",
     icon: <QuestionMark />,
   },
-  {
-    name: "Login",
-    path: "/admin/login",
-    icon: <Login />,
-  },
-  {
-    name: "Signup",
-    path: "/admin/signup",
-    icon: <Login />,
-  },
+  // {
+  //   name: "Login",
+  //   path: "/admin/login",
+  //   icon: <Login />,
+  // },
+  // {
+  //   name: "Signup",
+  //   path: "/admin/signup",
+  //   icon: <PersonAdd />,
+  // },
 ];
 
 function Drawer(props) {
@@ -62,6 +63,7 @@ function Drawer(props) {
   const handleDrawerTransitionEnd = () => {
     setIsClosing(false);
   };
+  
 
   const handleDrawerToggle = () => {
     if (!isClosing) {
@@ -71,7 +73,10 @@ function Drawer(props) {
 
   const drawer = (
     <div >
-      <Toolbar />
+      <Toolbar sx={{justifyContent : "center"}}>
+        <img src={Image} width={'120px'} alt="" />
+      </Toolbar>
+      
       <Divider />
       <List>
         {pages.map((page, index) => (
@@ -143,6 +148,11 @@ function Drawer(props) {
           <Typography variant="h6" noWrap component="div" sx={{ color: "#fff"}}>
             Admin Panel
           </Typography>
+        
+          <Box sx={{margin:"5px"}}>
+          <a href="/admin/login" style={{margin:"5px 5px",color:"white"}}><Logout /></a>
+          <a href="/admin/Signup" style={{margin:"5px 5px",color:"white"}}><PersonAdd /></a>
+          </Box>
         </Toolbar>
       </AppBar>
       <Box
