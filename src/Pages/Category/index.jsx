@@ -1,120 +1,260 @@
-import React, { useState } from "react";
-import Drawer from '../../Components/Drawer'
-import { Box,Button,TextField,Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography,} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import React, { useEffect, useState } from "react";
+import Drawer from "../../Components/Drawer";
+import TextField from "../../Components/TextField";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Box, Switch, TableCell } from "@mui/material";
+import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
-import Switch from '@mui/material/Switch';
+import axios from "axios";
+import Typography from '@mui/material/Typography';
+import { ToastContainer, toast } from "react-toastify";
+import TableComponent from "../../Components/TableComponent";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 const Category = () => {
-  const [search, setSearch] = useState("");
-  const [categories, setCategories] = useState([
-    { id: 1, name: "Electronics", status: "Active" },
-    { id: 2, name: "Furniture", status: "Inactive" },
-    { id: 3, name: "Clothing", status: "Active" },
-  ]);
+  let token = localStorage.getItem("Token");
+  let [category, setCategory] = useState([]);
+  let [eid, setEid] = useState(null);
+  let [search, setSearch] = useState("");
+  let TableHeader = ["Index", "Category Name", "Status", "Delete", "Update"];
+  const formik = useFormik({
+    initialValues: {
+      catagoryName: "",
+    },
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        let res;
+        if (eid && eid.length) {
+          res = await axios.patch(
+            `https://interviewhub-3ro7.onrender.com/catagory/${eid}`,
+            values,
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          );
+        } else {
+          res = await axios.post(
+            "https://interviewhub-3ro7.onrender.com/catagory/create",
+            values,
+            {
+              headers: {
+                Authorization: token,
+              },
+            }
+          );
+        }
+        setEid(null);
+        toast.success(res.data.message);
+        resetForm();
+        handleClose();
+        dataFetch();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
 
-  const handleSearch = (event) => {
-    setSearch(event.target.value);
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
 
-  const handleDelete = (id) => {
-    setCategories(categories.filter((category) => category.id !== id));
+  const handleClose = () => {
+    setOpen(false);
   };
 
-  const handleUpdate = (id) => {
-    alert(`Update category with ID: ${id}`);
+  let dataFetch = async () => {
+    try {
+      let res = await axios.get(
+        "https://interviewhub-3ro7.onrender.com/catagory/",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      setCategory(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
+  const searchCat = (values) => {
+    console.log("search===>", values)
+    axios.get("https://interviewhub-3ro7.onrender.com/catagory/?search=" + values, {
+        headers: {
+            Authorization: token,
+        },
+    })
+        .then((res) => {
+            console.log(res)
+            setCategory(res.data.data);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
+};
 
-  const handleAddCategory = () => {
-    alert("Open Add Category Modal");
-  };
+const handleSearch = (e) => {
+    console.log(e)
+    const value = e.target.value;
+    console.log("search==>", value)
+    setSearch(value);
+    searchCat(value);
+};
 
-  const filteredCategories = categories.filter((category) =>
-    category.name.toLowerCase().includes(search.toLowerCase())
-  );
-  const label = { inputProps: { 'aria-label': 'Color switch demo' } };
+  function updateData(id) {
+    setEid(id);
+    let dataFind = category.find((el) => el._id === id);
+    formik.setValues(dataFind);
+    handleClickOpen();
+  }
+
+  async function switchToggle(id) {
+    let findData = category.find((el) => el._id === id);
+    try {
+      let res = await axios.patch(
+        `https://interviewhub-3ro7.onrender.com/catagory/${id}`,
+        { status: findData.status === "on" ? "off" : "on" },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      dataFetch();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function deleteData(id) {
+    try {
+      let res = await axios.delete(
+        `https://interviewhub-3ro7.onrender.com/catagory/${id}`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      dataFetch();
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    dataFetch();
+  }, []);
 
   return (
     <Drawer>
-       <Box sx={{ padding: 2 }}>
-      {/* Header Section */}
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: 2,
-        }}
-      >
-        <TextField
-          label="Search Category"
-          variant="outlined"
-          value={search}
-          onChange={handleSearch}
-          sx={{ width: "60%" }}
-        />
-        <Button
-          variant="contained"
-          startIcon={<AddIcon />}
-          onClick={handleAddCategory}
+      <Box sx={{Padding:2}}>
+     <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 2
+          }}
         >
-          Add Category
-        </Button>
+           <TextField
+             label="Search Q&A"
+             variant="outlined"
+             value={search}
+             onChange={handleSearch}
+             sx={{ width: "60%" }}
+           />
+          <Button 
+            variant="contained"
+            startIcon={<AddIcon />}
+            sx={{backgroundColor:"#79797a"}}
+            onClick={() => {
+              setEid(null);
+              setOpen(true);
+            
+            }}
+          >
+            Add Category
+          </Button>
+        </Box>
+        </Box>
+      <Box sx={{ width: "100%" }}>
+        <TableComponent
+          TableHeader={TableHeader}
+          TableData={category}
+          renderRow={(row, index) => {
+            return (
+              <>
+                <TableCell component="th" scope="row" align="left">
+                  {index + 1}
+                </TableCell>
+                <TableCell align="left">{row.catagoryName}</TableCell>
+                <TableCell align="left">
+                  <Switch
+                    checked={row.status === "on" ? true : false}
+                    onClick={() => switchToggle(row._id)}
+                  />
+                </TableCell>
+                <TableCell align="left">
+                  <Button
+                    variant="contained"
+                    onClick={() => deleteData(row._id)}
+                    sx={{backgroundColor:"red"}}
+                  >
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
+                <TableCell align="left">
+                  <Button
+                    variant="contained"
+                    onClick={() => updateData(row._id)}
+                    sx={{backgroundColor:"green"}}
+                  >
+                    <EditIcon />
+                  </Button>
+                </TableCell>
+              </>
+            );
+          }}
+        />
       </Box>
 
-      {/* Table Section */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>No</TableCell>
-              <TableCell>Category</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell align="center">Delete</TableCell>
-              <TableCell align="center">Update</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredCategories.length > 0 ? (
-              filteredCategories.map((category, index) => (
-                <TableRow key={category.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell><Switch {...label} defaultChecked color="default" /></TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDelete(category.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleUpdate(category.id)}
-                    >
-                      <EditIcon sx={{color:"#65C466"}} />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={5} align="center">
-                  <Typography>No categories found.</Typography>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
-   </ Drawer>
-
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Add Category"}</DialogTitle>
+        <form onSubmit={formik.handleSubmit}>
+          <DialogContent>
+            <TextField
+              label="Category Name"
+              name="catagoryName"
+              onChange={formik.handleChange}
+              value={formik.values.catagoryName}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" type="submit">
+              Add Category
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+      {/* <ToastContainer /> */}
+    </Drawer >
   );
 };
 
 export default Category;
-

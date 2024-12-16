@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -12,23 +12,40 @@ import EmailIcon from "@mui/icons-material/Email";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { ToastContainer, toast } from "react-toastify";
+import * as Yup from "yup";
+
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  let Token = localStorage.getItem("Token");
+  let [loader, setLoader] = useState(false);
+
+  let [submitting , setSubmitting] = useState ();
   let navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
+   const loginSchema = Yup.object().shape({
+      password: Yup.string()
+        .min(8, 'Too Short!')
+        .max(10, 'Too Long!')
+        .required('Required'),
+      email: Yup.string()
+        .email('Invalid email')
+        .required('Required'),
+    });
   
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-  
+    validationSchema: loginSchema,  
     onSubmit: async (values, { setSubmitting }) => {
+      setLoader(true);
       try {
         console.log(values);
         
@@ -36,17 +53,30 @@ const Login = () => {
           "https://interviewhub-3ro7.onrender.com/admin/login",
           values
         );
+        localStorage.setItem("Token", response.data.token);
+        toast.success(response.data.message, {
+          theme: "dark",
+        });
         console.log("Login successful:", response.data);
         navigate("/admin");
-       
       } catch (error) {
         console.error("Login failed:",  error.message);
      
       } finally {
-        setSubmitting(false);
+        setLoader(false)
+        // setSubmitting(false);
       }
     },
   });
+  useEffect(() => {
+    if (Token) {
+      navigate("/admin");
+    }
+  }, [Token]);
+
+  if(loader){
+    return <h1>lodding.................</h1>
+  }
 
   return (
     <Box
@@ -146,10 +176,11 @@ const Login = () => {
               },
             }}
           >
-            {formik.isSubmitting ? "Logging in..." : "Login"}
+            {formik.Submitting ? "Logging in..." : "Login"}
           </Button>
         </form>
       </Box>
+      <ToastContainer />
     </Box>
   );
 };

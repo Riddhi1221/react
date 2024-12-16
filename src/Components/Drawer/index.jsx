@@ -1,13 +1,13 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
-import { Drawer as MuiDrawer, Typography, Toolbar } from "@mui/material";
+import { Drawer as MuiDrawer, Typography, Toolbar, Button } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import { SpaceDashboard, Menu, Category, FolderCopy, QuestionMark, Login ,PersonAdd , Logout} from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link ,useNavigate} from "react-router-dom";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -38,19 +38,12 @@ let pages = [
     path: "/admin/qa",
     icon: <QuestionMark />,
   },
-  // {
-  //   name: "Login",
-  //   path: "/admin/login",
-  //   icon: <Login />,
-  // },
-  // {
-  //   name: "Signup",
-  //   path: "/admin/signup",
-  //   icon: <PersonAdd />,
-  // },
 ];
 
 function Drawer(props) {
+
+  let navigate = useNavigate()
+  let Token = localStorage.getItem("Token");
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
@@ -115,6 +108,17 @@ function Drawer(props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
+    let logoutPanel = () => {
+      localStorage.removeItem("Token")
+      navigate("login")
+  }
+
+useEffect(() => {
+  if(!Token){
+      navigate('login')
+  }
+}, [Token]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -150,8 +154,8 @@ function Drawer(props) {
           </Typography>
         
           <Box sx={{margin:"5px"}}>
-          <a href="/admin/login" style={{margin:"5px 5px",color:"white"}}><Logout /></a>
-          <a href="/admin/Signup" style={{margin:"5px 5px",color:"white"}}><PersonAdd /></a>
+          <Button variant="contained" onClick={logoutPanel} sx={{background:"transparent", boxShadow:"none", color:"white"}}><a href="/admin/login" style={{margin:"5px 5px",color:"white"}}><Logout /></a></Button>
+          <Button><a href="/admin/Signup" style={{margin:"5px 5px",color:"white"}}><PersonAdd /></a></Button>
           </Box>
         </Toolbar>
       </AppBar>

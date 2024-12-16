@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -9,14 +9,16 @@ import IconButton from "@mui/material/IconButton";
 import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useFormik } from "formik";
+import { useFormik,ErrorMessage  } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import * as Yup from "yup";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [Data , setData] = useState([]);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleClickShowConfirmPassword = () =>
@@ -24,13 +26,23 @@ const Signup = () => {
 
   const handleMouseDownPassword = (event) => event.preventDefault();
 
+  const SignupSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(8, 'Too Short!')
+      .max(10, 'Too Long!')
+      .required('Required'),
+    email: Yup.string()
+      .email('Invalid email')
+      .required('Required'),
+  });
+
   // Formik configuration
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-   
+    validationSchema: SignupSchema,
     onSubmit: async (values, { setSubmitting }) => {
       console.log("Submitting form values:", values);
       try {
@@ -39,7 +51,8 @@ const Signup = () => {
           values
         );
         console.log("Signup successful:", response.data);
-        navigate("/admin");
+        // setData( response.data)
+        navigate("/admin/login");
       } catch (error) {
         console.error("Signup failed:", error.message);
         alert("Signup failed. Please try again.");
@@ -107,6 +120,7 @@ const Signup = () => {
               name="email"
               label="Email"
               variant="standard"
+              type="email"
               fullWidth
               value={formik.values.email}
               onChange={formik.handleChange}
@@ -141,6 +155,7 @@ const Signup = () => {
                 ),
               }}
             />
+             {/* <ErrorMessage name="password" /> */}
           </FormControl>
 
           {/* Confirm Password Field */}
