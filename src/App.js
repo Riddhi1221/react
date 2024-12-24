@@ -12,7 +12,7 @@ import Signup from "./Pages/Signup";
 const App = () => {
   return (
     <Routes>
-      <Route path="/admin">
+      <Route path="/">
         <Route index element={<Dashboard />} />
         <Route path="category" element={<Category />} />
         <Route path="subcategory" element={<SubCategory />} />

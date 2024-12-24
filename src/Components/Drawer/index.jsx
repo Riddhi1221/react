@@ -20,22 +20,22 @@ const drawerWidth = 240;
 let pages = [
   {
     name: "Dashboard",
-    path: "/admin/",
+    path: "/",
     icon: <SpaceDashboard />,
   },
   {
     name: "Category",
-    path: "/admin/category",
+    path: "/category",
     icon: <Category />,
   },
   {
     name: "Sub Category",
-    path: "/admin/subcategory",
+    path: "/subcategory",
     icon: <FolderCopy />,
   },
   {
     name: "Q & A",
-    path: "/admin/qa",
+    path: "/qa",
     icon: <QuestionMark />,
   },
 ];
@@ -154,8 +154,8 @@ useEffect(() => {
           </Typography>
         
           <Box sx={{margin:"5px"}}>
-          <Button variant="contained" onClick={logoutPanel} sx={{background:"transparent", boxShadow:"none", color:"white"}}><a href="/admin/login" style={{margin:"5px 5px",color:"white"}}><Logout /></a></Button>
-          <Button><a href="/admin/Signup" style={{margin:"5px 5px",color:"white"}}><PersonAdd /></a></Button>
+          <Button variant="contained" onClick={logoutPanel} sx={{background:"transparent", boxShadow:"none", color:"white"}}><a href="/login" style={{margin:"5px 5px",color:"white"}}><Logout /></a></Button>
+          <Button><a href="/Signup" style={{margin:"5px 5px",color:"white"}}><PersonAdd /></a></Button>
           </Box>
         </Toolbar>
       </AppBar>

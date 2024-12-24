@@ -47,7 +47,7 @@ const Signup = () => {
         const response = await axios.post(
           "https://interviewhub-3ro7.onrender.com/admin/signup",values);
         console.log("Signup successful:", response.data);
-        navigate("/admin/login");
+        navigate("/login");
       } catch (error) {
         console.error("Signup failed:", error.message);
         alert("Signup failed. Please try again.");
