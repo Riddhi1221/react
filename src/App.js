@@ -8,12 +8,13 @@ import { Routes, Route } from "react-router-dom";
 import NoFound from "./Pages/NoFound";
 import Login from "./Pages/login";
 import Signup from "./Pages/Signup";
+import Mainpage from "./Components/Mainpage";
 
 const App = () => {
   return (
     <Routes>
       <Route path="/">
-        <Route index element={<Dashboard />} />
+        <Route index element={<Mainpage />} />
         <Route path="category" element={<Category />} />
         <Route path="subcategory" element={<SubCategory />} />
         <Route path="qa" element={<QA />} />

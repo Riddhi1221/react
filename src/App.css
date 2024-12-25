@@ -36,6 +36,235 @@
     transform: rotate(360deg);
   }
 }
-.c{
-  background-color: transparent;
+* {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  text-decoration: none;
+  font-family: "-apple-system, BlinkMacSystemFont, " Segoe UI", Roboto, Helvetica, Arial, sans-serif, " Apple Color Emoji", " Segoe UI Emoji", " Segoe UI Symbol"";
+
+  box-sizing: border-box;
+}
+
+/* header */
+
+h3 {
+  font-weight: 500 !important;
+}
+
+
+
+.active {
+  background: #2487ce !important;
+  color: #fff !important;
+}
+
+/* table */
+
+
+
+.css-1howxi1-MuiTableCell-root {
+  /* padding: 16px 32px !important;
+  background-color: #2487ce; */
+  color: #fff !important;
+}
+
+
+/* .css-qb4tzx-MuiButtonBase-root-MuiButton-root {
+  background-color: #2487ce !important;
+}
+
+.css-byenzh-MuiButtonBase-root-MuiSwitch-switchBase.Mui-checke {
+  color: #124265 !important;
+}
+
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+  background-color: #2487ce !important;
+
+}
+
+.css-zxtyt4-MuiPaper-root-MuiAppBar-root {
+  background-color: #2487ce !important;
+} */
+
+/* end table */
+
+.MuiDialogContent-root {
+  padding-top: 20px !important;
+}
+
+.css-46bh2p-MuiCardContent-root {
+  padding: 20px !important;
+}
+
+.css-46bh2p-MuiCardContent-root:last-child {
+  padding-bottom: 10px !important;
+}
+
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+  width: 100% !important;
+}
+
+.css-1v5u2yv {
+  padding: 0 !important;
+  margin-top: 20px;
+}
+
+.none {
+  display: none;
+}
+
+/* .css-dsuxgy-MuiTableCell-root {
+  padding: 26px 35px !important;
+}
+
+.css-1howxi1-MuiTableCell-root {
+  padding: 18px 32px !important;
+
+} */
+
+
+/* responsive */
+
+
+@media (min-width:1200px) and (max-width:1466px) {
+  .css-qb4tzx-MuiButtonBase-root-MuiButton-root {
+
+    margin-left: 35px !important;
+    margin-bottom: 20px !important;
+
+  }
+
+  .css-19zz962-MuiFormControl-root-MuiTextField-root {
+    width: 75% !important;
+  }
+
+  .css-1diqhvy-MuiFormControl-root-MuiTextField-root {
+    width: 70% !important;
+
+  }
+}
+
+
+@media (min-width:280px) and (max-width:1200px) {
+  .css-qb4tzx-MuiButtonBase-root-MuiButton-root {
+    width: 100%;
+    margin-left: 0 !important;
+    margin-bottom: 20px !important;
+  }
+
+  .css-19zz962-MuiFormControl-root-MuiTextField-root {
+    width: 100% !important;
+  }
+
+  .css-1diqhvy-MuiFormControl-root-MuiTextField-root {
+    width: 100% !important;
+
+  }
+}
+
+@media (min-width:280px) and (max-width:600px) {
+  .css-fkzsbh {
+    margin-left: 0px !important;
+    padding: 20px;
+  }
+
+  .css-14pqnar-MuiTypography-root {
+    margin-left: 0 !important;
+  }
+
+  .css-sghohy-MuiButtonBase-root-MuiButton-root {
+    width: 100%;
+  }
+}
+
+@media (min-width:280px) and (max-width:400px) {
+
+  .css-71ek3e-MuiTypography-root {
+    display: none;
+  }
+}
+
+
+/* home */
+
+/* slider */
+
+.slider {
+  background-image: url(https://bootstrapmade.com/demo/templates/OnePage/assets/img/hero-bg-abstract.jpg);
+  padding-top: 100px;
+  padding-bottom: 50px;
+  /* height: 100vh; */
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+
+}
+
+.slider::before {
+  content: '';
+  background-color: rgba(255, 255, 255, 0.6);
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.slider-btn:hover {
+  background-color: #3ca1e9 !important;
+  color: #fff;
+  z-index: 10;
+}
+
+.footer {
+  background-color: #eef7fd;
+  border-bottom: 1px solid #3ca1e9;
+  border-top: 1px solid #3ca1e9;
+  font-size: 14px;
+  padding-bottom: "50px";
+
+}
+
+.footer .social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #3ca1e9;
+  font-size: 16px;
+  margin-right: 10px;
+  transition: 0.3s;
+
+}
+
+.footer .social-links a:hover {
+  background-color: #3ca1e9;
+}
+
+.footer .social-links a:hover .icon {
+  color: #fff !important;
+  /* color:  #84c6f31f; */
+  transition: 0.3s;
+
+}
+
+.box {
+  border: 3px solid #84c6f31f;  
+}
+
+.box:hover {
+  border: 3px solid #2487ce;
+  scale: 1.05;
+  transition: .5s;
 }
