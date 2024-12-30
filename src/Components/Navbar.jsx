@@ -17,7 +17,7 @@ const Navbar = () => {
             <header>
 
                 <Box sx={{ flexGrow: 1 }} >
-                    <AppBar position="sticky" sx={{ padding: "15px 0", backgroundColor: "#2487ce" }}>
+                    <AppBar position="sticky" sx={{ padding: "15px 0", backgroundColor: "#4b81a8" }}>
                         <Container maxWidth="992px">
                             <Toolbar>
                                 <IconButton
@@ -32,8 +32,8 @@ const Navbar = () => {
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "30px" }}>
                                     QuickStart
                                 </Typography>
-                                <Button><a href="/admin/login" style={{ color: "#2487ce", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#fff" }}>LOGIN</a></Button>
-                                <Button><a href="/admin/signup" style={{ color: "#fff", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#2487ce" }}>SIGN UP</a></Button>
+                                <Button><a href="/login" className='hover' style={{ color: "#4b81a8", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#fff"  }}>LOGIN</a></Button>
+                                <Button><a href="/signup" style={{ color: "#fff", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#4b81a8" }}>SIGN UP</a></Button>
 
                             </Toolbar>
                         </Container>

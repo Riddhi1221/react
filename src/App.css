@@ -231,6 +231,14 @@ header {
 
 }
 
+.hover:hover{
+  background-color: #4b81a8 !important;
+  color: #fff !important;
+}
+.hover1:hover{
+  background-color: #fff !important;
+  color: #4b81a8 !important;
+}
 .box {
   border: 3px solid #84c6f31f;  
 }

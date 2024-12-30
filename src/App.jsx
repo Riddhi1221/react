@@ -11,6 +11,9 @@ import Login from "./Pages/login";
 import Signup from "./Pages/Signup";
 import Mainpage from "./Components/Mainpage";
 import CatagoryData from "./Components/Category1/CatagoryData";
+import SubcatagoryData from "./Components/Subcategory1/SubcatagoryData";
+import QuestionData from "./Components/Q&A/QuestionData"
+
 
 const App = () => {
   return (
@@ -23,6 +26,8 @@ const App = () => {
       <Route path='subcategory' element={<SubCategory />} />
       <Route path='qa' element={<QA />} />
       <Route path='catagorydata' element={<CatagoryData />} />
+      <Route path='SubcatagoryData' element={<SubcatagoryData />} />
+      <Route path='QuestionData' element={<QuestionData />} />
       <Route path='login' element={<Login />} />
       <Route path='signup' element={<Signup />} />
       <Route path='*' element={<NoFound />} />
