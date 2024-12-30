@@ -20,7 +20,7 @@ const drawerWidth = 240;
 let pages = [
   {
     name: "Dashboard",
-    path: "/",
+    path: "/dashboard",
     icon: <SpaceDashboard />,
   },
   {
@@ -154,7 +154,7 @@ useEffect(() => {
           </Typography>
         
           <Box sx={{margin:"5px"}}>
-          <Button variant="contained" onClick={logoutPanel} sx={{background:"transparent", boxShadow:"none", color:"white"}}><a href="/login" style={{margin:"5px 5px",color:"white"}}><Logout /></a></Button>
+          <Button variant="contained" onClick={logoutPanel} sx={{background:"transparent", boxShadow:"none", color:"white"}}><a href="/" style={{margin:"5px 5px",color:"white"}}><Logout /></a></Button>
           <Button><a href="/Signup" style={{margin:"5px 5px",color:"white"}}><PersonAdd /></a></Button>
           </Box>
         </Toolbar>

@@ -70,7 +70,7 @@ const Login = () => {
   });
   useEffect(() => {
     if (Token) {
-      navigate("/");
+      navigate("/dashboard");
     }
   }, [Token]);
 

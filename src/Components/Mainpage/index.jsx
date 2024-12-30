@@ -1,23 +1,11 @@
-// import React from 'react'
-
-// const Mainpage = () => {
-//   return (
-//     <div>
-      
-//     </div>
-//   )
-// }
-
-// export default Mainpage
-
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import { Container, Grid } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 import SchoolIcon from '@mui/icons-material/School';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -35,16 +23,15 @@ import image from '../../images/interviews.png'
 
 const Mainpage = () => {
 
-    const category = localStorage.getItem('category');
-    const subcategory = localStorage.getItem('subcategory');
-    const questions = localStorage.getItem('questions');
+    let categoryData = localStorage.getItem("category")
+    let subcategory = localStorage.getItem("subcategory")
+    let question = localStorage.getItem("question")
 
     return (
         <>
             <header>
-
                 <Box sx={{ flexGrow: 1 }} >
-                    <AppBar position="sticky" sx={{ padding: "15px 0", backgroundColor: "#2487ce" }}>
+                    <AppBar position="sticky" sx={{ padding: "15px 0", backgroundColor: "#4b81a8" }}>
                         <Container maxWidth="992px">
                             <Toolbar>
                                 <IconButton
@@ -59,9 +46,9 @@ const Mainpage = () => {
                                 <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "30px" }}>
                                     <a href='/' style={{ color: '#fff' }} >QuickStart</a>
                                 </Typography>
-                                <Button><a href="/admin/login" style={{ color: "#2487ce", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#fff" }}>LOGIN</a></Button>
-                                <Button><a href="/admin/signup" style={{
-                                    color: "#fff", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#2487ce"
+                                <Button><a href="/login" style={{ color: "#4b81a8", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#fff" }}>LOGIN</a></Button>
+                                <Button><a href="/signup" style={{
+                                    color: "#fff", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#4b81a8"
                                     , display: { xs: "none" }
                                 }}>SIGN UP</a></Button>
                                 
@@ -87,7 +74,7 @@ const Mainpage = () => {
 
                     </Typography>
                     <Typography sx={{ textAlign: "center", marginTop: "30px" }}>
-                        <Button className='slider-btn' sx={{ color: "#fff", border: "1px solid #fff", padding: "14px 50px", borderRadius: "4px", background: "#2487ce", zIndex: "10" }}>Get Started</Button>
+                        <Button className='slider-btn' sx={{ color: "#fff", border: "1px solid #fff", padding: "14px 50px", borderRadius: "4px", background: "#4b81a8", zIndex: "10" }}>Get Started</Button>
                     </Typography>
 
 
@@ -110,7 +97,7 @@ const Mainpage = () => {
                             <CardActionArea sx={{ zIndex: "10" }} >
                                 <a href='/CatagoryData'>
                                     <CardContent sx={{ padding: "50px" }}>
-                                        <InterestsIcon sx={{ marginBottom: "20px", color: "#2487ce", fontSize: "32px" }} />
+                                        <InterestsIcon sx={{ marginBottom: "20px", color: "#4b81a8", fontSize: "32px" }} />
                                         <Typography variant="h5" component="div" sx={{ marginBottom: "20px", color: "#124265", fontWeight: "600" }}>
                                             Catagory
                                         </Typography>
@@ -138,7 +125,7 @@ const Mainpage = () => {
                             <CardActionArea sx={{ zIndex: "10" }}>
                                 <a href='/SubcatagoryData'>
                                     <CardContent sx={{ padding: "50px" }}>
-                                        <ControlPointDuplicateIcon sx={{ marginBottom: "20px", color: "#2487ce", fontSize: "32px" }} />
+                                        <ControlPointDuplicateIcon sx={{ marginBottom: "20px", color: "#4b81a8", fontSize: "32px" }} />
                                         <Typography variant="h5" component="div" sx={{ marginBottom: "20px", color: "#124265", fontWeight: "600" }}>
                                             Sub Catagory
                                         </Typography>
@@ -165,7 +152,7 @@ const Mainpage = () => {
                             <CardActionArea sx={{ zIndex: "10" }}>
                                 <a href='/QuestionData'>
                                     <CardContent sx={{ padding: "50px" }}>
-                                        <HelpOutlineIcon sx={{ marginBottom: "20px", color: "#2487ce", fontSize: "32px" }} />
+                                        <HelpOutlineIcon sx={{ marginBottom: "20px", color: "#4b81a8", fontSize: "32px" }} />
                                         <Typography variant="h5" component="div" sx={{ marginBottom: "20px", color: "#124265", fontWeight: "600" }}>
                                             Que - Ans
                                         </Typography>
@@ -191,21 +178,21 @@ const Mainpage = () => {
 
                             <CardContent>
                                 <Typography sx={{ padding: "20px", textAlign: "center" }}>
-                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#3ca1e9" }}>{category}</h1>
+                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#4b81a8" }}>{categoryData || 0}</h1>
                                     <p style={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}>Catagory</p>
                                 </Typography>
                             </CardContent>
 
                             <CardContent>
                                 <Typography sx={{ padding: "20px", textAlign: "center" }}>
-                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#3ca1e9" }}>{subcategory}</h1>
+                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#4b81a8" }}>{subcategory || 0}</h1>
                                     <p style={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}>Sub Catagory</p>
                                 </Typography>
                             </CardContent>
 
                             <CardContent>
                                 <Typography sx={{ padding: "20px", textAlign: "center" }}>
-                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#3ca1e9" }}>{questions}</h1>
+                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#4b81a8" }}>{question || 0}</h1>
                                     <p style={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}>Que - Ans</p>
                                 </Typography>
                             </CardContent>
@@ -227,7 +214,7 @@ const Mainpage = () => {
                         </Box>
 
                         <Box sx={{  paddingLeft: "15px", width: "50%" }}>
-                            <h2 style={{ fontSize: "50px", marginBottom: "15px", marginLeft: '15px', letterSpacing: "1px" }}>Develop an Enjoyable <span style={{ color: "#3ca1e9" }}>Learning</span> Roadmap</h2>
+                            <h2 style={{ fontSize: "50px", marginBottom: "15px", marginLeft: '15px', letterSpacing: "1px" }}>Develop an Enjoyable <span style={{ color: "#4b81a8" }}>Learning</span> Roadmap</h2>
                             <p style={{ color: "gray", paddingLeft: "15px", letterSpacing: "0.3px" }}>Make your learning roadmap to prepare for data science, software development, web development, app development, game development with Exam Keeda. Our platform gives you the opportunity to learn programming languages like C, C++, Python, PHP, JavaScript(JS), JAVA and many more in different ways, like through tutorials, study materials, codding competitions, MCQ quizzes, projects, and more.</p>
 
                         </Box>
@@ -248,17 +235,17 @@ const Mainpage = () => {
                             </Grid>
                             <p style={{ fontSize: "15px", letterSpacing: "1px" }}>QuickStart is an online practice platform <br /> that has been operating since 2024 until now.</p>
                             <Box className="social-links" sx={{ display: "flex", marginTop: "1.5rem" }}>
-                                <a href="">< TwitterIcon className='icon' sx={{ color: '#3ca1e9' }} /></a>
-                                <a href="">< FacebookIcon className='icon' sx={{ color: '#3ca1e9' }} /></a>
-                                <a href="">< LinkedInIcon className='icon' sx={{ color: '#3ca1e9' }} /></a>
-                                <a href="">< GitHubIcon className='icon' sx={{ color: '#3ca1e9' }} /></a>
+                                <a href="">< TwitterIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
+                                <a href="">< FacebookIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
+                                <a href="">< LinkedInIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
+                                <a href="">< GitHubIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
                             </Box>
                         </Box>
 
-                        <Box width="50%">
+                        {/* <Box width="50%">
                             <h4 style={{ color: "#124265", marginBottom: "20px", fontSize: '18px' }}>Useful Links</h4>
                             <a href='' style={{ fontSize: '14px', color: 'gray' }}>Home</a>
-                        </Box>
+                        </Box> */}
 
                     </Box>
 
@@ -267,10 +254,10 @@ const Mainpage = () => {
                     <Typography sx={{ marginTop: "50px" }}></Typography>
 
 
-                    <Box sx={{ textAlign: "center", padding: "30px 0px", color: "#fff", background: "#3ca1e9" }}>
+                    <Box sx={{ textAlign: "center", padding: "30px 0px", color: "#fff", background: "#4b81a8" }}>
                         <p>© <span>Copyright</span> <strong>QuickStart</strong> <span>All Rights Reserved</span></p>
                         <Box sx={{ marginTop: "10px" }}>
-                            Designed by <a href="/" style={{ color: "#eef7fd" }}>Chandrika Sarvaiya</a>
+                            Designed by <a href="/" style={{ color: "#eef7fd" }}>Riddhi Chheta</a>
                         </Box>
                     </Box>
                 </Container>

@@ -4,29 +4,31 @@ import { Box, Grid, Card, CardContent, Typography } from "@mui/material";
 import CategoryIcon from "@mui/icons-material/Category";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
-  let [category, setcategory] = useState([]);
+  let [categoryData, setcategory] = useState([]);
   let [subcategory, setsubcategory] = useState([]);
   let [questions, setquestions] = useState([]);
+  let navigate = useNavigate();
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
-  }, [token]);
 
+  
   useEffect(() => {
     let categoryData = localStorage.getItem("category")
     let subcategory = localStorage.getItem("subcategory")
     let question = localStorage.getItem("question")
-
+    
     let dataCopy = cardData.map((el, i) => {
       cardData[0].value = categoryData || 0
       cardData[1].value = subcategory || 0
       cardData[2].value = question ||0
       return cardData[i]
-
+      
     })
     setCardData(dataCopy);
+    navigate("/dashboard");
     
   }, [])
 
@@ -53,6 +55,10 @@ const Dashboard = () => {
       bgColor: "#FFF3E0",
     },
   ])
+
+  useEffect(() => {
+    navigate("/dashboard");
+}, [token]);
 
   return (
     <Drawer>
