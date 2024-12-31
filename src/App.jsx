@@ -1,6 +1,5 @@
 import React from "react";
 import './App.css';
-import Drawer from "./Components/Drawer";
 import Dashboard from "./Pages/Dashboard";
 import Category from "./Pages/Category";
 import SubCategory from "./Pages/SubCategory";
