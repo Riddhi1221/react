@@ -76,7 +76,7 @@ h3 {
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 2;
+  /* z-index: 2 !important; */
 }
 
 header {
@@ -93,7 +93,7 @@ header {
 .slider-btn:hover {
   background-color: #4b81a8 !important;
   color: #fff;
-  z-index: 10;
+  /* z-index: 10; */
 }
 
 .footer {
@@ -149,7 +149,7 @@ header {
 
 /* responsive */
 
-/* 
+
 @media (min-width:1200px) and (max-width:1466px) {
   .css-qb4tzx-MuiButtonBase-root-MuiButton-root {
 
@@ -206,4 +206,4 @@ header {
   .css-71ek3e-MuiTypography-root {
     display: none;
   }
-} */
+}

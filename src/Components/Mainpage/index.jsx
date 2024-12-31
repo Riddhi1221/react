@@ -25,50 +25,22 @@ const Mainpage = () => {
       {/* Hero Section */}
       <section className="slider" style={{ padding: "50px 0" }}>
         <Container>
-          <Grid container justifyContent="center" textAlign="center">
-            <Typography
-              component="h1"
-              sx={{
-                fontSize: { xs: "32px", sm: "48px", md: "56px" },
-                fontWeight: 700,
-                color: "#124265",
-                mb: 2,
-              }}
-            >
-              Quick Start for <br /> Interview Practice
-            </Typography>
-            <Typography
-              component="p"
-              sx={{
-                fontSize: { xs: "16px", sm: "20px", md: "22px" },
-                color: "gray",
-                mb: 3,
-                letterSpacing: "0.5px",
-              }}
-            >
-              All your hard work will pay off. My best wishes are with you.
-            </Typography>
-            <Button>
-              <a
-                href="/login"
-                style={{
-                  color: "#fff",
-                  border: "1px solid #fff",
-                  padding: "14px 40px",
-                  borderRadius: "4px",
-                  background: "#4b81a8",
-                  textDecoration: "none",
-                }}
-              >
-                Get Started
-              </a>
-            </Button>
-          </Grid>
-        </Container>
-      </section>
+           <Grid xs={8} sx={{ display: "flex", justifyContent: "center" }}>
+                        <Typography component="h1" sx={{ fontSize: { xs: "32px", sm: "48px", md: "56px" }, fontWeight: "700", color: "#124265", zIndex: "10", textAlign: "center" }}>
+                            Quick Start for <br />interview practice
+                        </Typography>
+                    </Grid>
+                    <Typography component="p" sx={{ marginTop: "10px", fontSize: { xs: "16px", sm: "20px", md: "22px" }, textAlign: "center", letterSpacing: "1px" }}>
+                        All your hard work will pay off. My best wishes are with you.
+
+                    </Typography>
+                    <Typography sx={{ textAlign: "center", marginTop: "30px" }}>
+                        <Button className='slider-btn' sx={{ color: "#fff", border: "1px solid #fff", padding: "14px 50px", borderRadius: "4px", background: "#4b81a8", zIndex: "10" }}>Get Started</Button>
+                    </Typography>
+     
 
       {/* Cards Section */}
-      <Container sx={{ mt: 5 }}>
+      <Container sx={{ mt: 5 ,mb: 5}}>
         <Grid container spacing={3}>
           {[
             { title: "Category", icon: <InterestsIcon />, link: "/CatagoryData" },
@@ -93,6 +65,8 @@ const Mainpage = () => {
           ))}
         </Grid>
       </Container>
+      </Container>
+      </section>
 
       {/* Dashboard Section */}
       <section style={{ padding: "50px 0", background: "#eef7fd" }}>
