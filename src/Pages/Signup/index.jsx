@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
+import {
+  Box,
+  Typography,
+  Button,
+  InputAdornment,
+  FormControl,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useFormik,ErrorMessage  } from "formik";
+import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
@@ -17,24 +19,18 @@ import * as Yup from "yup";
 const Signup = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const [Data , setData] = useState([]);
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
-
   const handleMouseDownPassword = (event) => event.preventDefault();
 
   const SignupSchema = Yup.object().shape({
     password: Yup.string()
-      .min(5, 'Too Short!')
-      .max(10, 'Too Long!')
-      .required('Required'),
-    email: Yup.string()
-      .email('Invalid email')
-      .required('Required'),
+      .min(5, "Too Short!")
+      .max(10, "Too Long!")
+      .required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
   });
 
-  // Formik configuration
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -45,7 +41,9 @@ const Signup = () => {
       console.log("Submitting form values:", values);
       try {
         const response = await axios.post(
-          "https://interviewhub-3ro7.onrender.com/admin/signup",values);
+          "https://interviewhub-3ro7.onrender.com/admin/signup",
+          values
+        );
         console.log("Signup successful:", response.data);
         navigate("/login");
       } catch (error) {
@@ -55,38 +53,29 @@ const Signup = () => {
         setSubmitting(false);
       }
     },
-    
   });
 
   return (
     <Box
       sx={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         background: "linear-gradient(135deg, #ff7e5f, #feb47b)",
-        animation: "backgroundShift 8s ease infinite alternate",
-        "@keyframes backgroundShift": {
-          "0%": { backgroundPosition: "0% 50%" },
-          "100%": { backgroundPosition: "100% 50%" },
-        },
         overflow: "hidden",
+        padding: 2,
       }}
     >
       <Box
         sx={{
-          width: 400,
-          p: 5,
+          width: { xs: "100%", sm: "400px" },
+          p: { xs: 3, sm: 5 },
           borderRadius: 3,
           boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
           backgroundColor: "rgba(255, 255, 255, 0.85)",
           backdropFilter: "blur(10px)",
-          animation: "fadeIn 1.5s",
-          "@keyframes fadeIn": {
-            "0%": { opacity: 0 },
-            "100%": { opacity: 1 },
-          },
+          mx: { xs: 2, sm: 0 },
         }}
       >
         <Typography
@@ -101,14 +90,17 @@ const Signup = () => {
         >
           Create Account
         </Typography>
-        <Typography variant="body2" align="center" sx={{ color: "#555", mb: 3 }}>
+        <Typography
+          variant="body2"
+          align="center"
+          sx={{ color: "#555", mb: 3 }}
+        >
           Sign up to get started
         </Typography>
 
-        {/* Form */}
         <form onSubmit={formik.handleSubmit}>
           {/* Email Field */}
-          <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
+          <Box sx={{ display: "flex", alignItems: "flex-end", mb: 3 }}>
             <EmailIcon sx={{ color: "#feb47b", mr: 1 }} />
             <TextField
               id="email"
@@ -126,7 +118,7 @@ const Signup = () => {
           </Box>
 
           {/* Password Field */}
-          <FormControl variant="standard" fullWidth sx={{ mb: 2 }}>
+          <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
             <TextField
               id="password"
               name="password"
@@ -150,11 +142,7 @@ const Signup = () => {
                 ),
               }}
             />
-             {/* <ErrorMessage name="password" /> */}
           </FormControl>
-
-          {/* Confirm Password Field */}
-         
 
           {/* Submit Button */}
           <Button

@@ -1,11 +1,13 @@
-import React, { useState,useEffect } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  InputAdornment,
+  IconButton,
+  FormControl,
+  TextField,
+} from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import EmailIcon from "@mui/icons-material/Email";
@@ -15,40 +17,33 @@ import { useNavigate } from "react-router";
 import { ToastContainer, toast } from "react-toastify";
 import * as Yup from "yup";
 
-
 const Login = () => {
   let Token = localStorage.getItem("Token");
-  let [loader, setLoader] = useState(false);
-
-  let [submitting , setSubmitting] = useState ();
-  let navigate = useNavigate();
+  const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
-  
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
-   const loginSchema = Yup.object().shape({
-      password: Yup.string()
-        .min(8, 'Too Short!')
-        .max(10, 'Too Long!')
-        .required('Required'),
-      email: Yup.string()
-        .email('Invalid email')
-        .required('Required'),
-    });
-  
+  const loginSchema = Yup.object().shape({
+    password: Yup.string()
+      .min(8, "Too Short!")
+      .max(10, "Too Long!")
+      .required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
+  });
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    validationSchema: loginSchema,  
+    validationSchema: loginSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setLoader(true);
       try {
         console.log(values);
-        
         const response = await axios.post(
           "https://interviewhub-3ro7.onrender.com/admin/login",
           values
@@ -57,52 +52,57 @@ const Login = () => {
         toast.success(response.data.message, {
           theme: "dark",
         });
-        console.log("Login successful:", response.data);
         navigate("/admin");
       } catch (error) {
-        console.error("Login failed:",  error.message);
-     
+        console.error("Login failed:", error.message);
+        toast.error("Login failed. Please try again.");
       } finally {
-        setLoader(false)
-        // setSubmitting(false);
+        setLoader(false);
       }
     },
   });
+
   useEffect(() => {
     if (Token) {
       navigate("/dashboard");
     }
-  }, [Token]);
+  }, [Token, navigate]);
 
-  if(loader){
-    return <h1>lodding.................</h1>
+  if (loader) {
+    return <h1>Loading...</h1>;
   }
 
   return (
     <Box
       sx={{
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
         background: "linear-gradient(135deg, #ff9a9e, #fecfef)",
+        padding: 2,
       }}
     >
       <Box
         sx={{
-          width: 400,
-          p: 5,
+          width: { xs: "100%", sm: "400px" },
+          p: { xs: 3, sm: 5 },
           borderRadius: 3,
           boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
           backgroundColor: "rgba(255, 255, 255, 0.85)",
           backdropFilter: "blur(10px)",
+          mx: { xs: 2, sm: 0 },
         }}
       >
         <Typography
           variant="h4"
           align="center"
           gutterBottom
-          sx={{ fontWeight: "bold", color: "#333" }}
+          sx={{
+            fontWeight: "bold",
+            color: "#333",
+            mb: { xs: 2, sm: 3 },
+          }}
         >
           Welcome Back
         </Typography>
@@ -139,7 +139,6 @@ const Login = () => {
               name="password"
               label="Password"
               type={showPassword ? "text" : "password"}
-              fullWidth
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -176,7 +175,7 @@ const Login = () => {
               },
             }}
           >
-            {formik.Submitting ? "Logging in..." : "Login"}
+            {formik.isSubmitting ? "Logging in..." : "Login"}
           </Button>
         </form>
       </Box>
