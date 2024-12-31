@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box, Grid } from '@mui/material';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import Navbar from '../Navbar';
@@ -22,17 +22,15 @@ const SubcategoryData = () => {
       }
     })
       .then((res) => {
-        console.log("res--->", res.data.data);
         setAllSubcategories(res.data.data);
 
         if (category) {
           const filter = res.data.data.filter((el) => el.catagoryID.catagoryName === category);
           setFilteredSubcategories(filter);
-          console.log("Filtered Data:", filter);
         }
       })
       .catch((err) => {
-        console.log("err", err);
+        console.error("Error:", err);
       });
   }, [category, token]);
 
@@ -42,68 +40,125 @@ const SubcategoryData = () => {
 
   return (
     <>
-    <Navbar />
-      <Typography style={{ padding: "50px 0", background: "#eef7fd", borderBottom: "1px solid #4b81a8" }}>
+      <Navbar />
+      {/* Header Section */}
+      <Typography
+        component="div"
+        sx={{
+          padding: "50px 0",
+          background: "#eef7fd",
+          borderBottom: "1px solid #4b81a8",
+        }}
+      >
         <Container>
-          <Box sx={{ display: "flex", alignItems: "center", marginBottom: "10px", justifyContent: 'space-between' }}>
-            <h1 style={{ color: "#124265" }}>Sub Category</h1>
-            <p style={{ marginLeft: '48px' }}> 
-              <Link to="/" style={{ color: "#4b81a8" }}>Home</Link> / SubCategory
-            </p>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <Typography variant="h4" sx={{ color: "#124265" }}>
+              Sub Category
+            </Typography>
+            <Typography sx={{ fontSize: "16px", color: "#4b81a8" }}>
+              <Link to="/" style={{ textDecoration: "none", color: "#4b81a8" }}>
+                Home
+              </Link>{" "}
+              / SubCategory
+            </Typography>
           </Box>
         </Container>
       </Typography>
-      <Box sx={{ padding: "80px 0" }}>
-        <Container sx={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
-          <Typography variant="h4" sx={{ width: '100%', textAlign: 'center', color: '#124265' }}>Filtered Subcategories</Typography>
-          {
-            filteredSubcategories.length > 0 ? filteredSubcategories.map((item, index) => (
-              <Box key={item._id} sx={{ marginTop: "50px" }}>
-                <Box 
-                  className="box" 
-                  onClick={() => handleNavigation(item.subCatagoryname)}
-                  sx={{ 
-                    width: "250px", 
-                    background: "#eef7fd", 
-                    padding: "35px 0", 
-                    borderRadius: "8px", 
-                    boxShadow: "inset 0 0 10px #84c6f31f", 
-                    cursor: 'pointer' 
-                  }}
-                >
-                  <Typography variant='h5' sx={{ textAlign: "center", color: '#124265' }}>
-                    {index + 1}. {item.subCatagoryname}
-                  </Typography>
-                </Box>
-              </Box>
-            )) : <Typography sx={{ marginTop: '20px', textAlign: 'center', color: 'gray' }}>
-                "No subcategories found for the selected category"
-              </Typography>
-          }
 
-          <Typography variant="h4" sx={{ width: '100%', textAlign: 'center', marginTop: '40px', color: '#124265' }}>All Subcategories</Typography>
-          {
-            allSubcategories.map((item, index) => (
-              <Box key={item._id} sx={{ marginTop: "50px" }}>
-                <Box 
-                  className="box" 
+      {/* Main Content */}
+      <Box sx={{ padding: "40px 15px" }}>
+        <Container>
+          <Typography
+            variant="h5"
+            sx={{ textAlign: "center", color: "#124265", marginBottom: "20px" }}
+          >
+            Filtered Subcategories
+          </Typography>
+          <Grid container spacing={3} justifyContent="center">
+            {filteredSubcategories.length > 0 ? (
+              filteredSubcategories.map((item, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
+                  <Box
+                    className="box"
+                    onClick={() => handleNavigation(item.subCatagoryname)}
+                    sx={{
+                      background: "#eef7fd",
+                      padding: "20px",
+                      borderRadius: "8px",
+                      boxShadow: "inset 0 0 10px #84c6f31f",
+                      cursor: "pointer",
+                      textAlign: "center",
+                      transition: "transform 0.3s",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                      },
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ color: "#124265" }}>
+                      {index + 1}. {item.subCatagoryname}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  marginTop: "20px",
+                  textAlign: "center",
+                  color: "gray",
+                }}
+              >
+                No subcategories found for the selected category
+              </Typography>
+            )}
+          </Grid>
+
+          {/* All Subcategories Section */}
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: "center",
+              color: "#124265",
+              marginTop: "40px",
+              marginBottom: "20px",
+            }}
+          >
+            All Subcategories
+          </Typography>
+          <Grid container spacing={3} justifyContent="center">
+            {allSubcategories.map((item, index) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
+                <Box
+                  className="box"
                   onClick={() => handleNavigation(item.subCatagoryname)}
-                  sx={{ 
-                    width: "250px", 
-                    background: "#eef7fd", 
-                    padding: "35px 0", 
-                    borderRadius: "8px", 
-                    boxShadow: "inset 0 0 10px #84c6f31f", 
-                    cursor: 'pointer' 
+                  sx={{
+                    background: "#eef7fd",
+                    padding: "20px",
+                    borderRadius: "8px",
+                    boxShadow: "inset 0 0 10px #84c6f31f",
+                    cursor: "pointer",
+                    textAlign: "center",
+                    transition: "transform 0.3s",
+                    "&:hover": {
+                      transform: "scale(1.05)",
+                    },
                   }}
                 >
-                  <Typography variant='h5' sx={{ textAlign: "center", color: '#124265' }}>
+                  <Typography variant="h6" sx={{ color: "#124265" }}>
                     {index + 1}. {item.subCatagoryname}
                   </Typography>
                 </Box>
-              </Box>
-            ))
-          }
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
       <Footer />
@@ -112,4 +167,3 @@ const SubcategoryData = () => {
 };
 
 export default SubcategoryData;
-

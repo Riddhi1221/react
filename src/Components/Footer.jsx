@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { Container, Grid } from '@mui/material';
@@ -8,53 +8,116 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 
 const Footer = () => {
-    return (
-        <div>
+  return (
+    <footer style={{ backgroundColor: "#f8f9fa" }}>
+      <Box sx={{ padding: "15px" }}>
+        <Container>
+          <Grid container spacing={4}>
+            {/* Left Section */}
+            <Grid item xs={12} md={6}>
+              <Typography
+                component="a"
+                href="#"
+                sx={{
+                  fontSize: { xs: "24px", md: "32px" },
+                  color: "#124265",
+                  fontWeight: 700,
+                  letterSpacing: "1px",
+                  display: "inline-block",
+                  mb: 2,
+                  textDecoration: "none",
+                }}
+              >
+                QuickStart
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: { xs: "14px", sm: "15px" },
+                  color: "gray",
+                  lineHeight: 1.8,
+                }}
+              >
+                QuickStart is an online practice platform <br />
+                that has been operating since 2024 until now.
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  mt: 3,
+                  "& .icon": {
+                    fontSize: "28px",
+                    color: "#4b81a8",
+                    cursor: "pointer",
+                    transition: "transform 0.2s",
+                  },
+                  "& .icon:hover": {
+                    transform: "scale(1.1)",
+                  },
+                }}
+              >
+                <a href="#"><TwitterIcon className="icon" /></a>
+                <a href="#"><FacebookIcon className="icon" /></a>
+                <a href="#"><LinkedInIcon className="icon" /></a>
+                <a href="#"><GitHubIcon className="icon" /></a>
+              </Box>
+            </Grid>
 
-            <footer className='footer'>
-                <Container sx={{ padding: "50px 0px" }}>
-                    <Box sx={{ display: "flex" }}>
+            {/* Right Section */}
+            <Grid item xs={12} md={6}>
+              <Typography
+                component="h4"
+                sx={{
+                  fontSize: { xs: "16px", sm: "18px" },
+                  color: "#124265",
+                  mb: 2,
+                }}
+              >
+                Useful Links
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                <Typography
+                  component="a"
+                  href="#"
+                  sx={{
+                    fontSize: { xs: "14px", sm: "16px" },
+                    color: "#4b81a8",
+                    textDecoration: "none",
+                    transition: "color 0.3s",
+                  }}
+                >
+                  Home
+                </Typography>
+                {/* Add more links as needed */}
+              </Box>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
 
+      {/* Bottom Section */}
+      <Box sx={{ textAlign: "center", py: 3, backgroundColor: "#4b81a8", color: "#fff", padding: "15px" }}>
+        <Typography
+          sx={{
+            fontSize: { xs: "14px", sm: "16px" },
+            mb: 1,
+          }}
+        >
+          © <strong>QuickStart</strong> <span>All Rights Reserved</span>
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: { xs: "14px", sm: "16px" },
+          }}
+        >
+          Designed by{" "}
+          <a href="/" style={{ color: "#eef7fd", textDecoration: "none" }}>
+            Chandrika Sarvaiya
+          </a>
+        </Typography>
+      </Box>
+    </footer>
+  );
+};
 
-                        <Box width="60%">
-                            <Grid sx={{ display: "flex", alignItems: "center" }}>
-                                <a href="" style={{ fontSize: "32px", color: "#124265", fontWeight: "700", letterSpacing: "1px", marginBottom: "20px" }}>QuickStart</a>
-                            </Grid>
-                            <p style={{ fontSize: "15px", letterSpacing: "1px" }}>QuickStart is an online practice platform <br /> that has been operating since 2024 until now.</p>
-                            <Box className="social-links" sx={{ display: "flex", marginTop: "1.5rem" }}>
-                                <a href="">< TwitterIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
-                                <a href="">< FacebookIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
-                                <a href="">< LinkedInIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
-                                <a href="">< GitHubIcon className='icon' sx={{ color: '#4b81a8' }} /></a>
-                            </Box>
-                        </Box>
-
-                        <Box width="50%">
-                            <h4 style={{ color: "#124265", marginBottom: "20px", fontSize: '18px' }}>Useful Links</h4>
-                            <a href='' style={{ fontSize: '16px', color: '#4b81a8' }}>Home</a>
-                        </Box>
-
-                    </Box>
-
-
-
-                    <Typography sx={{ height: "50px" }}></Typography>
-
-
-                    <Box sx={{ textAlign: "center", padding: "30px 0px", color: "#fff", background: "#4b81a8" }}>
-                        <p>© <span>Copyright</span> <strong>QuickStart</strong> <span>All Rights Reserved</span></p>
-                        <Box sx={{ marginTop: "10px" }}>
-                            Designed by <a href="/" style={{ color: "#eef7fd" }}>Chandrika Sarvaiya</a>
-                        </Box>
-                    </Box>
-                </Container>
-
-
-
-
-            </footer>
-        </div>
-    )
-}
-
-export default Footer
+export default Footer;

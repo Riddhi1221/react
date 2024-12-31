@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -9,190 +9,156 @@ import { CardActionArea } from '@mui/material';
 import InterestsIcon from '@mui/icons-material/Interests';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import image from '../../images/interviews.png'
+import image from '../../images/interviews.png';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
 
-
-
 const Mainpage = () => {
+  const categoryData = localStorage.getItem("category") || 0;
+  const subcategory = localStorage.getItem("subcategory") || 0;
+  const question = localStorage.getItem("question") || 0;
 
-    let categoryData = localStorage.getItem("category")
-    let subcategory = localStorage.getItem("subcategory")
-    let question = localStorage.getItem("question")
+  return (
+    <>
+      <Navbar />
 
-    return (
-        <>
+      {/* Hero Section */}
+      <section className="slider" style={{ padding: "50px 0" }}>
+        <Container>
+          <Grid container justifyContent="center" textAlign="center">
+            <Typography
+              component="h1"
+              sx={{
+                fontSize: { xs: "32px", sm: "48px", md: "56px" },
+                fontWeight: 700,
+                color: "#124265",
+                mb: 2,
+              }}
+            >
+              Quick Start for <br /> Interview Practice
+            </Typography>
+            <Typography
+              component="p"
+              sx={{
+                fontSize: { xs: "16px", sm: "20px", md: "22px" },
+                color: "gray",
+                mb: 3,
+                letterSpacing: "0.5px",
+              }}
+            >
+              All your hard work will pay off. My best wishes are with you.
+            </Typography>
+            <Button>
+              <a
+                href="/login"
+                style={{
+                  color: "#fff",
+                  border: "1px solid #fff",
+                  padding: "14px 40px",
+                  borderRadius: "4px",
+                  background: "#4b81a8",
+                  textDecoration: "none",
+                }}
+              >
+                Get Started
+              </a>
+            </Button>
+          </Grid>
+        </Container>
+      </section>
 
-            <Navbar />
-
-            {/* Slider */}
-
-            <section className='slider'>
-                <Container >
-                    <Grid xs={8} sx={{ display: "flex", justifyContent: "center" }}>
-                        <Typography component="h1" sx={{ fontSize: "56px", fontWeight: "700", color: "#124265", zIndex: "10", textAlign: "center" }}>
-                            Quick Start for <br />interview practice
-                        </Typography>
-                    </Grid>
-                    <Typography component="p" sx={{ marginTop: "10px", fontSize: "22px", textAlign: "center", letterSpacing: "1px" }}>
-                        All your hard work will pay off. My best wishes are with you.
-
+      {/* Cards Section */}
+      <Container sx={{ mt: 5 }}>
+        <Grid container spacing={3}>
+          {[
+            { title: "Category", icon: <InterestsIcon />, link: "/CatagoryData" },
+            { title: "Sub Category", icon: <ControlPointDuplicateIcon />, link: "/SubcatagoryData" },
+            { title: "Que - Ans", icon: <HelpOutlineIcon />, link: "/QuestionData" },
+          ].map((item, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card sx={{ textAlign: "center", height: "100%" }}>
+                <CardActionArea component="a" href={item.link}>
+                  <CardContent sx={{ padding: "30px" }}>
+                    {React.cloneElement(item.icon, { sx: { fontSize: "40px", color: "#4b81a8", mb: 2 } })}
+                    <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
+                      {item.title}
                     </Typography>
-                    <Typography sx={{ textAlign: "center", marginTop: "30px" }}>
-                        <Button ><a href="/login" className='slider-btn' style={{ color: "#fff", border: "1px solid #fff", padding: "14px 50px", borderRadius: "4px", background: "#4b81a8", zIndex: "10" }}>Get Started </a></Button>
+                    <Typography color="text.secondary">
+                      All your hard work will pay off. My best wishes are with you.
                     </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
+      {/* Dashboard Section */}
+      <section style={{ padding: "50px 0", background: "#eef7fd" }}>
+        <Container>
+          <Grid container spacing={3} justifyContent="center">
+            {[
+              { count: categoryData, label: "Category" },
+              { count: subcategory, label: "Sub Category" },
+              { count: question, label: "Que - Ans" },
+            ].map((item, index) => (
+              <Grid item xs={12} sm={4} key={index} textAlign="center">
+                <CardContent>
+                  <Typography
+                    component="h1"
+                    sx={{
+                      fontSize: "60px",
+                      fontWeight: 700,
+                      color: "#4b81a8",
+                    }}
+                  >
+                    {item.count}
+                  </Typography>
+                  <Typography
+                    component="p"
+                    sx={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}
+                  >
+                    {item.label}
+                  </Typography>
+                </CardContent>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </section>
 
-                    {/* cards */}
+      {/* Information Section */}
+      <section style={{ padding: "50px 0" }}>
+        <Container>
+          <Grid container spacing={3} alignItems="center">
+            <Grid item xs={12} md={6}>
+              <img src={image} alt="Learning Roadmap" style={{ width: "100%" }} />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography
+                component="h2"
+                sx={{
+                  fontSize: { xs: "28px", sm: "40px", md: "50px" },
+                  fontWeight: 700,
+                  mb: 2,
+                  letterSpacing: "1px",
+                }}
+              >
+                Develop an Enjoyable{" "}
+                <span style={{ color: "#4b81a8" }}>Learning</span> Roadmap
+              </Typography>
+              <Typography sx={{ color: "gray", letterSpacing: "0.5px" }}>
+                Make your learning roadmap to prepare for data science, software development, web development, app development, game development with Exam Keeda. Our platform gives you the opportunity to learn programming languages like C, C++, Python, PHP, JavaScript(JS), JAVA, and many more in different ways, like through tutorials, study materials, coding competitions, MCQ quizzes, projects, and more.
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
+      </section>
 
-
-                    <Typography sx={{ marginTop: "80px", display: "flex", columnGap: "20px" }}>
-                        <Card sx={{
-                            width: {
-                                xs: "100%",
-                                sm: "50%",
-                                md: "33%",
-                                lg: "33%",
-                                xl: "33%",
-                            },
-
-                            zIndex: "10"
-                        }}>
-
-                            <CardActionArea sx={{ zIndex: "10" }} >
-                                <a href='/CatagoryData'>
-                                    <CardContent sx={{ padding: "50px" }}>
-                                        <InterestsIcon sx={{ marginBottom: "20px", color: "#4b81a8", fontSize: "32px" }} />
-                                        <Typography variant="h5" component="div" sx={{ marginBottom: "20px", color: "#124265", fontWeight: "600" }}>
-                                            Catagory
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" fontSize="16px">
-                                            All your hard work will pay off. My best wishes are with you.
-                                        </Typography>
-                                    </CardContent>
-                                </a>
-                            </CardActionArea>
-
-                        </Card>
-
-
-                        <Card sx={{
-                            width: {
-                                xs: "100%",
-                                sm: "50%",
-                                md: "33%",
-                                lg: "33%",
-                                xl: "33%",
-                            },
-
-                            zIndex: "10"
-                        }}>
-                            <CardActionArea sx={{ zIndex: "10" }}>
-                                <a href='/SubcatagoryData'>
-                                    <CardContent sx={{ padding: "50px" }}>
-                                        <ControlPointDuplicateIcon sx={{ marginBottom: "20px", color: "#4b81a8", fontSize: "32px" }} />
-                                        <Typography variant="h5" component="div" sx={{ marginBottom: "20px", color: "#124265", fontWeight: "600" }}>
-                                            Sub Catagory
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" fontSize="16px">
-                                            All your hard work will pay off. My best wishes are with you.
-                                        </Typography>
-                                    </CardContent>
-                                </a>
-                            </CardActionArea>
-                        </Card>
-
-
-                        <Card sx={{
-                            width: {
-                                xs: "100%",
-                                sm: "50%",
-                                md: "33%",
-                                lg: "33%",
-                                xl: "33%",
-                            },
-
-                            zIndex: "10"
-                        }}>
-                            <CardActionArea sx={{ zIndex: "10" }}>
-                                <a href='/QuestionData'>
-                                    <CardContent sx={{ padding: "50px" }}>
-                                        <HelpOutlineIcon sx={{ marginBottom: "20px", color: "#4b81a8", fontSize: "32px" }} />
-                                        <Typography variant="h5" component="div" sx={{ marginBottom: "20px", color: "#124265", fontWeight: "600" }}>
-                                            Que - Ans
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary" fontSize="16px">
-                                            All your hard work will pay off. My best wishes are with you.
-                                        </Typography>
-                                    </CardContent>
-                                </a>
-                            </CardActionArea>
-                        </Card>
-                    </Typography>
-
-                </Container>
-            </section >
-
-
-            {/* dashboard */}
-
-            < section style={{ padding: "80px 0px" }}>
-                <Typography sx={{ background: "#eef7fd" }}>
-                    <Container>
-                        <Typography display="flex" justifyContent="space-between">
-
-                            <CardContent>
-                                <Typography sx={{ padding: "20px", textAlign: "center" }}>
-                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#4b81a8" }}>{categoryData || 0}</h1>
-                                    <p style={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}>Catagory</p>
-                                </Typography>
-                            </CardContent>
-
-                            <CardContent>
-                                <Typography sx={{ padding: "20px", textAlign: "center" }}>
-                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#4b81a8" }}>{subcategory || 0}</h1>
-                                    <p style={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}>Sub Catagory</p>
-                                </Typography>
-                            </CardContent>
-
-                            <CardContent>
-                                <Typography sx={{ padding: "20px", textAlign: "center" }}>
-                                    <h1 style={{ marginBottom: "10px", fontSize: "60px", fontWeight: "700", color: "#4b81a8" }}>{question || 0}</h1>
-                                    <p style={{ fontSize: "18px", color: "gray", letterSpacing: "1px" }}>Que - Ans</p>
-                                </Typography>
-                            </CardContent>
-
-                        </Typography>
-                    </Container>
-                </Typography>
-            </section >
-
-
-
-            {/* part */}
-
-            < section style={{ paddingBottom: "50px" }}>
-                <Box>
-                    <Container sx={{ display: "flex", alignItems: "center" }}>
-                        <Box sx={{ width: "50%" }}>
-                            <img src={image} alt="" style={{ width: "100%" }} />
-                        </Box>
-
-                        <Box sx={{ paddingLeft: "15px", width: "50%" }}>
-                            <h2 style={{ fontSize: "50px", marginBottom: "15px", marginLeft: '15px', letterSpacing: "1px" }}>Develop an Enjoyable <span style={{ color: "#4b81a8" }}>Learning</span> Roadmap</h2>
-                            <p style={{ color: "gray", paddingLeft: "15px", letterSpacing: "0.3px" }}>Make your learning roadmap to prepare for data science, software development, web development, app development, game development with Exam Keeda. Our platform gives you the opportunity to learn programming languages like C, C++, Python, PHP, JavaScript(JS), JAVA and many more in different ways, like through tutorials, study materials, codding competitions, MCQ quizzes, projects, and more.</p>
-
-                        </Box>
-                    </Container>
-
-                </Box>
-            </section >
-            <Footer />
-
-
-        </>
-    )
-}
+      <Footer />
+    </>
+  );
+};
 
 export default Mainpage;

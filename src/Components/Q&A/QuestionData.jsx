@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Typography, Box } from '@mui/material';
+import { Container, Typography, Box, Grid } from '@mui/material';
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 import Navbar from '../Navbar';
@@ -31,73 +31,133 @@ const QuestionData = () => {
         }
       })
       .catch((err) => {
-        console.log("err", err);
+        console.error("Error:", err);
       });
   }, [subcategory, token]);
 
-  const handleNavigation = (path, state) => {
-    navigate(path, { state });
-  };
-
   return (
     <>
-    <Navbar />
-      <Typography style={{ padding: "50px 0", background: "#eef7fd", borderBottom: "1px solid #4b81a8" }}>
+      <Navbar />
+      {/* Header Section */}
+      <Box
+        sx={{
+          padding: "50px 0",
+          background: "#eef7fd",
+          borderBottom: "1px solid #4b81a8",
+        }}
+      >
         <Container>
-          <Box sx={{ display: "flex", alignItems: "center", marginBottom: "10px", justifyContent: 'space-between' }}>
-            <h1 style={{ color: "#124265" }}>Ques - Ans</h1>
-            <p style={{ marginLeft: '48px' }}>
-              <Link to="/" style={{ color: "#4b81a8" }}>Home</Link> / Ques - Ans
-            </p>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <Typography variant="h4" sx={{ color: "#124265" }}>
+              Ques - Ans
+            </Typography>
+            <Typography sx={{ fontSize: "16px", color: "#4b81a8" }}>
+              <Link to="/" style={{ textDecoration: "none", color: "#4b81a8" }}>
+                Home
+              </Link>{" "}
+              / Ques - Ans
+            </Typography>
           </Box>
         </Container>
-      </Typography>
+      </Box>
 
-      <Box sx={{ padding: "80px 0" }}>
-        <Container sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <Typography variant="h4" sx={{ textAlign: 'center', color: '#124265', fontWeight: "700" }}>
+      {/* Main Content */}
+      <Box sx={{ padding: "40px 15px" }}>
+        <Container>
+          {/* Filtered Questions Section */}
+          <Typography
+            variant="h5"
+            sx={{ textAlign: 'center', color: '#124265', fontWeight: "700", marginBottom: "20px" }}
+          >
             Filtered Questions
           </Typography>
-          {
-            filterQues.length > 0 ? filterQues.map((item, index) => (
-              <Box key={item._id} sx={{ marginTop: "20px" }}>
-                <Box className="box" sx={{
-                  width: "100%", background: "#eef7fd", padding: "20px 20px",
-                  borderRadius: "8px", boxShadow: "inset 0 0 10px #84c6f31f"
-                }}>
-                  <Typography variant='h5' sx={{ color: '#124265', marginBottom: "10px" }}>
-                    {index + 1}. {item.questions}
-                  </Typography>
-                  <Typography variant='h5' sx={{ color: 'gray', fontSize: "17px" }}>
-                    {"Ans : "} {item.answer}
-                  </Typography>
-                </Box>
-              </Box>
-            )) : <Typography sx={{ marginTop: '20px', textAlign: 'center', color: 'gray' }}>
-                "No questions found for the selected subcategory"
+          <Grid container spacing={3}>
+            {filterQues.length > 0 ? (
+              filterQues.map((item, index) => (
+                <Grid item xs={12} sm={6} md={4} key={item._id}>
+                  <Box
+                    sx={{
+                      background: "#eef7fd",
+                      padding: "20px",
+                      borderRadius: "8px",
+                      boxShadow: "inset 0 0 10px #84c6f31f",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{ color: '#124265', marginBottom: "10px" }}
+                    >
+                      {index + 1}. {item.questions}
+                    </Typography>
+                    <Typography
+                      sx={{ color: 'gray', fontSize: "16px" }}
+                    >
+                      {"Ans: "} {item.answer}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))
+            ) : (
+              <Typography
+                sx={{
+                  width: "100%",
+                  textAlign: "center",
+                  color: "gray",
+                  marginTop: "20px",
+                }}
+              >
+                No questions found for the selected subcategory
               </Typography>
-          }
+            )}
+          </Grid>
 
-          <Typography variant="h4" sx={{ textAlign: 'center', marginTop: '40px', color: '#124265', fontWeight: "700" }}>
+          {/* All Questions Section */}
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: 'center',
+              color: '#124265',
+              fontWeight: "700",
+              marginTop: "40px",
+              marginBottom: "20px",
+            }}
+          >
             All Questions
           </Typography>
-          {
-            allQues.map((item, index) => (
-              <Box key={item._id} sx={{ marginTop: "20px" }}>
-                <Box className="box" sx={{
-                  width: "100%", background: "#eef7fd", padding: "20px 20px",
-                  borderRadius: "8px", boxShadow: "inset 0 0 10px #84c6f31f"
-                }}>
-                  <Typography variant='h5' sx={{ color: '#124265', marginBottom: "10px" }}>
+          <Grid container spacing={3}>
+            {allQues.map((item, index) => (
+              <Grid item xs={12} sm={6} md={4} key={item._id}>
+                <Box
+                  sx={{
+                    background: "#eef7fd",
+                    padding: "20px",
+                    borderRadius: "8px",
+                    boxShadow: "inset 0 0 10px #84c6f31f",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ color: '#124265', marginBottom: "10px" }}
+                  >
                     {index + 1}. {item.questions}
                   </Typography>
-                  <Typography variant='h5' sx={{ color: 'gray', fontSize: "17px" }}>
-                    {"Ans : "} {item.answer}
+                  <Typography
+                    sx={{ color: 'gray', fontSize: "16px" }}
+                  >
+                    {"Ans: "} {item.answer}
                   </Typography>
                 </Box>
-              </Box>
-            ))
-          }
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
       <Footer />
@@ -106,4 +166,3 @@ const QuestionData = () => {
 };
 
 export default QuestionData;
-

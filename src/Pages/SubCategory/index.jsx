@@ -105,25 +105,9 @@ const SubCategory = () => {
 
   const handleSearch = (e) => {
     const value = e.target.value;
-    // console.log("===>",value);
     setSearch(value);    //je type thy ae 
     searchCat(value);
   };
-
-
-  
-  // const searchCat = async (value) => {
-  //   try {
-  //     const res = await axios.get(
-  //       `https://interviewhub-3ro7.onrender.com/subcatagory/?search=${(value)}`,
-  //       { headers: { Authorization: token } }
-  //     );
-  //     setSubCategory(res.data.data);
-  //   } catch (error) {
-  //     console.error("Search error:", error);
-  //     toast.error("Failed to fetch search results.");
-  //   }
-  // };
   
 
   const handleClickOpen = () => setOpen(true);

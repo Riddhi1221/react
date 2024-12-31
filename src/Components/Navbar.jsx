@@ -1,47 +1,122 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { Container, Grid } from '@mui/material';
+import { Container, Drawer, List, ListItem, ListItemText } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
-
+import MenuIcon from '@mui/icons-material/Menu';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const Navbar = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm')); // Detect mobile screen size
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const toggleDrawer = (open) => {
+    setDrawerOpen(open);
+  };
 
-    return (
-        <>
-            <header>
+  return (
+    <>
+      <header>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="sticky" sx={{ padding: "10px 0", backgroundColor: "#4b81a8" }}>
+            <Container maxWidth="lg">
+              <Toolbar>
+                {/* Logo Section */}
+                <IconButton
+                  size="large"
+                  edge="start"
+                  color="inherit"
+                  aria-label="menu"
+                >
+                  <SchoolIcon />
+                </IconButton>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "24px" }}>
+                  QuickStart
+                </Typography>
 
-                <Box sx={{ flexGrow: 1 }} >
-                    <AppBar position="sticky" sx={{ padding: "15px 0", backgroundColor: "#4b81a8" }}>
-                        <Container maxWidth="992px">
-                            <Toolbar>
-                                <IconButton
-                                    size="large"
-                                    edge="start"
-                                    color="inherit"
-                                    aria-label="menu"
-                                // sx={{ mr: 2 }}
-                                >
-                                    <SchoolIcon />
-                                </IconButton>
-                                <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontSize: "30px" }}>
-                                    QuickStart
-                                </Typography>
-                                <Button><a href="/login" className='hover' style={{ color: "#4b81a8", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#fff"  }}>LOGIN</a></Button>
-                                <Button><a href="/signup" style={{ color: "#fff", border: "1px solid #fff", padding: "8px 25px", borderRadius: "4px", background: "#4b81a8" }}>SIGN UP</a></Button>
+                {/* Desktop Menu */}
+                {!isMobile && (
+                  <>
+                    <Button>
+                      <a
+                        href="/login"
+                        style={{
+                          color: "#4b81a8",
+                          border: "1px solid #fff",
+                          padding: "8px 20px",
+                          borderRadius: "4px",
+                          background: "#fff",
+                          textDecoration: "none",
+                        }}
+                      >
+                        LOGIN
+                      </a>
+                    </Button>
+                    <Button>
+                      <a
+                        href="/signup"
+                        style={{
+                          color: "#fff",
+                          border: "1px solid #fff",
+                          padding: "8px 20px",
+                          borderRadius: "4px",
+                          background: "#4b81a8",
+                          textDecoration: "none",
+                        }}
+                      >
+                        SIGN UP
+                      </a>
+                    </Button>
+                  </>
+                )}
 
-                            </Toolbar>
-                        </Container>
-                    </AppBar>
-                </Box>
-            </header>
-        </>
-    )
-}
+                {/* Mobile Menu */}
+                {isMobile && (
+                  <IconButton
+                    edge="end"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={() => toggleDrawer(true)}
+                  >
+                    <MenuIcon />
+                  </IconButton>
+                )}
+              </Toolbar>
+            </Container>
+          </AppBar>
 
-export default Navbar
+          {/* Drawer for Mobile Menu */}
+          <Drawer
+            anchor="right"
+            open={drawerOpen}
+            onClose={() => toggleDrawer(false)}
+          >
+            <Box
+              sx={{ width: 250 }}
+              role="presentation"
+              onClick={() => toggleDrawer(false)}
+              onKeyDown={() => toggleDrawer(false)}
+            >
+              <List>
+                <ListItem button component="a" href="/login">
+                  <ListItemText primary="LOGIN" />
+                </ListItem>
+                <ListItem button component="a" href="/signup">
+                  <ListItemText primary="SIGN UP" />
+                </ListItem>
+              </List>
+            </Box>
+          </Drawer>
+        </Box>
+      </header>
+    </>
+  );
+};
+
+export default Navbar;

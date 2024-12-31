@@ -1,9 +1,9 @@
-import { Container, Typography, Box, Button , Grid} from '@mui/material';
+import { Container, Typography, Box, Button, Grid } from '@mui/material';
 import { Link } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../Navbar';
-import Footer from '../Footer'
+import Footer from '../Footer';
 
 const CatagoryData = () => {
   const token = localStorage.getItem('token');
@@ -16,17 +16,17 @@ const CatagoryData = () => {
     axios.get('https://interviewhub-3ro7.onrender.com/catagory/', {
       headers: {
         Authorization: token,
-      }
+      },
     })
-    .then((res) => {
-      const data = res.data.data;
-      setCategories(data);
-      filterCategories(data, showAll);
-    })
-    .catch((error) => {
-      console.error("Error fetching categories:", error);
-    });
-  }
+      .then((res) => {
+        const data = res.data.data;
+        setCategories(data);
+        filterCategories(data, showAll);
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+      });
+  };
 
   const filterCategories = (data, showAll) => {
     if (showAll) {
@@ -35,13 +35,13 @@ const CatagoryData = () => {
       const filtered = data.filter((el) => el.status === 'on');
       setFilterCat(filtered);
     }
-  }
+  };
 
-  const CategoryView = () => {
+  const toggleCategoryView = () => {
     const newShowAll = !showAll;
     setShowAll(newShowAll);
     filterCategories(categories, newShowAll);
-  }
+  };
 
   useEffect(() => {
     getCategory();
@@ -49,59 +49,87 @@ const CatagoryData = () => {
 
   return (
     <>
-            <Navbar />
-      <Typography style={{ padding: "50px 0", background: "#eef7fd", borderBottom: "1px solid #4b81a8" }}>
+      <Navbar />
+      {/* Header Section */}
+      <Box sx={{ padding: "50px 0", background: "#eef7fd", borderBottom: "1px solid #4b81a8" }}>
         <Container>
-          <Box sx={{ display: "flex", alignItems: "center", marginBottom: "10px", justifyContent: 'space-between' }}>
-            <h1 style={{ color: "#124265" }}>Category</h1>
-            <p style={{ marginLeft: '48px' }}>
-              <a href="/" style={{ color: "#4b81a8" }}>Home</a> / Category
-            </p>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+            }}
+          >
+            <Typography variant="h4" sx={{ color: "#124265" }}>Category</Typography>
+            <Typography>
+              <Link to="/" style={{ textDecoration: 'none', color: "#4b81a8" }}>
+                Home
+              </Link>{" "}
+              / Category
+            </Typography>
           </Box>
-          <Button variant="contained" onClick={CategoryView} sx={{ backgroundColor:"#4b81a8"}}>
+          <Button
+            variant="contained"
+            onClick={toggleCategoryView}
+            sx={{
+              backgroundColor: "#4b81a8",
+              marginTop: { xs: 2, sm: 0 },
+              alignSelf: "flex-end",
+            }}
+          >
             {showAll ? 'Show Only Active Categories' : 'Show All Categories'}
           </Button>
         </Container>
-      </Typography>
-      <Box sx={{ padding: "80px 0" }}>
-        <Container sx={{ width: '100%', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
-          <Typography variant="h4" sx={{ width: '100%', textAlign: 'center', color: '#124265' }}>
+      </Box>
+
+      {/* Categories Section */}
+      <Box sx={{ padding: "40px 15px" }}>
+        <Container>
+          <Typography
+            variant="h4"
+            sx={{ textAlign: "center", color: "#124265", marginBottom: "20px" }}
+          >
             All Categories
           </Typography>
-          {filterCat.map((item, i) => (
-            <Box key={i} sx={{ marginTop: "50px" }}>
-              {/* Updated Link for React Router DOM v6 */}
-              <Link
-                to="/SubcatagoryData"
-                state={{ category: item.catagoryName }}
-                style={{ textDecoration: 'none' }}
-              >
-                <Box
-                  className="box"
-                  sx={{
-                    width: "250px",
-                    background: "#eef7fd",
-                    padding: "35px 0",
-                    borderRadius: "8px",
-                    boxShadow: "inset 0 0 10px #4b81a8",
-                  }}
+          <Grid container spacing={3} justifyContent="center">
+            {filterCat.map((item, i) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+                <Link
+                  to="/SubcatagoryData"
+                  state={{ category: item.catagoryName }}
+                  style={{ textDecoration: 'none' }}
                 >
-                  <Typography
-                    variant="h5"
-                    sx={{ textAlign: "center", color: '#124265' }}
+                  <Box
+                    sx={{
+                      background: "#eef7fd",
+                      padding: "20px",
+                      borderRadius: "8px",
+                      boxShadow: "inset 0 0 10px #4b81a8",
+                      textAlign: "center",
+                      transition: "transform 0.2s ease",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                      },
+                    }}
                   >
-                    {i + 1}.&nbsp; {item.catagoryName}
-                  </Typography>
-                </Box>
-              </Link>
-            </Box>
-          ))}
+                    <Typography
+                      variant="h6"
+                      sx={{ color: "#124265" }}
+                    >
+                      {i + 1}. {item.catagoryName}
+                    </Typography>
+                  </Box>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
       </Box>
-            <Footer />
+      <Footer />
     </>
   );
-}
+};
 
 export default CatagoryData;
-
