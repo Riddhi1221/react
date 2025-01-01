@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Grid,
   TableCell,
   Dialog,
   DialogActions,
@@ -54,7 +55,6 @@ const QA = () => {
         headers: { Authorization: token },
       });
       setQAData(res.data.data);
-      localStorage.setItem("question",res.data.data.length)
     } catch (error) {
       console.error("Error fetching Q&A data:", error);
       toast.error("Failed to fetch Q&A data. Please try again later.");
@@ -68,7 +68,6 @@ const QA = () => {
         headers: { Authorization: token },
       });
       setCategories(res.data.data);
-      console.log(res);
     } catch (error) {
       console.error("Error fetching categories:", error);
       toast.error("Failed to fetch categories.");
@@ -80,7 +79,6 @@ const QA = () => {
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/subcatagory/", {
         headers: { Authorization: token },
       });
-      
       setSubcategories(res.data.data);
     } catch (error) {
       console.error("Error fetching subcategories:", error);
@@ -110,16 +108,12 @@ const QA = () => {
 
   const closeDialog = () => {
     setDialogOpen(false);
-    setCurrentQA({ id: null, questions: "", answer: "", subCatagoryID: "" });
+    setCurrentQA({ id: null, questions: "", answer: "", subcatagoryID: "" });
   };
 
   const handleSubmit = async () => {
     try {
-      // console.log(currentQA);
-      
-      // return
       if (editMode) {
-        // Update QA
         await axios.patch(
           `https://interviewhub-3ro7.onrender.com/questions/${currentQA.id}`,
           currentQA,
@@ -127,7 +121,6 @@ const QA = () => {
         );
         toast.success("Q&A updated successfully!");
       } else {
-        // Add QA
         await axios.post(
           "https://interviewhub-3ro7.onrender.com/questions/create",
           currentQA,
@@ -172,23 +165,28 @@ const QA = () => {
     <Drawer>
       <Box sx={{ padding: 2 }}>
         {/* Search and Add Button */}
-        <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-          <TextField
-            label="Search Q&A"
-            variant="outlined"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            sx={{ width: "20%" }}
-          />
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => openDialog()}
-            sx={{ backgroundColor: "#79797a" }}
-          >
-            Add Q&A
-          </Button>
-        </Box>
+        <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
+          <Grid item xs={12} sm={8} md={10}>
+            <TextField
+              label="Search Q&A"
+              variant="outlined"
+              fullWidth
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4} md={2}>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              fullWidth
+              onClick={() => openDialog()}
+              sx={{ backgroundColor: "#79797a" }}
+            >
+              Add Q&A
+            </Button>
+          </Grid>
+        </Grid>
 
         {/* Q&A Table */}
         <TableComponent
@@ -199,8 +197,8 @@ const QA = () => {
               <TableCell>{index + 1}</TableCell>
               <TableCell>{row.questions}</TableCell>
               <TableCell>{row.answer}</TableCell>
-              <TableCell>{row.subcatagoryID?.subCatagoryname }</TableCell>
-              <TableCell>{row.subcatagoryID?.catagoryID?.catagoryName }</TableCell>
+              <TableCell>{row.subcatagoryID?.subCatagoryname}</TableCell>
+              <TableCell>{row.subcatagoryID?.catagoryID?.catagoryName}</TableCell>
               <TableCell>
                 <Button
                   variant="contained"

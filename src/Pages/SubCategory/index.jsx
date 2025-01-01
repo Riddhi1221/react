@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Box, Switch, TableCell, MenuItem, Select, InputLabel, FormControl } from "@mui/material";
+import { Box, Switch, TableCell, MenuItem, Select, InputLabel, FormControl, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { ToastContainer, toast } from "react-toastify";
 import TableComponent from "../../Components/TableComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { useTheme, useMediaQuery } from "@mui/material";
 import * as Yup from "yup";
 
 const SubCategory = () => {
@@ -23,6 +24,9 @@ const SubCategory = () => {
   const [eid, setEid] = useState(null);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm")); // Check if screen size is small
 
   const TableHeader = ["Index", "SubCategory Name", "Category Name", "Status", "Delete", "Update"];
 
@@ -57,21 +61,18 @@ const SubCategory = () => {
     },
   });
 
-  // Fetch subcategories
+  // Fetch data functions
   const dataFetch = async () => {
     try {
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/subcatagory/", {
         headers: { Authorization: token },
       });
       setSubCategory(res.data.data);
-
-      localStorage.setItem("subcategory",res.data.data.length)
     } catch (error) {
       console.error(error);
     }
   };
 
-  // Fetch categories for dropdown
   const fetchCategories = async () => {
     try {
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/catagory/", {
@@ -84,31 +85,15 @@ const SubCategory = () => {
     }
   };
 
-  const searchCat = (values) => {
-    console.log("function call ==> ", values)
-    axios.get("https://interview-portal-api.onrender.com/subcatagory/?search=" + values, {
-      headers: {
-        Authorization: token,
-      },
-    })
-      .then((res) => {
-        console.log("==================", res)
-        // setSubcategories(res.data.data);
-        setSubCategory(res.data.data.filter(
-          (item) => item.catagoryID && item.catagoryID.status === 'on'
-        ));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   const handleSearch = (e) => {
     const value = e.target.value;
-    setSearch(value);    //je type thy ae 
-    searchCat(value);
+    setSearch(value);
+    axios.get(`https://interviewhub-3ro7.onrender.com/subcatagory/?search=${value}`, {
+      headers: { Authorization: token },
+    })
+      .then((res) => setSubCategory(res.data.data))
+      .catch((err) => console.error(err));
   };
-  
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -152,73 +137,70 @@ const SubCategory = () => {
 
   useEffect(() => {
     dataFetch();
-    fetchCategories(); // Fetch categories for dropdown
-    if (!search) {
-      dataFetch();
-    }
+    fetchCategories();
   }, []);
-
-  // useEffect(() => {
-  //   if (!search) {
-  //     dataFetch();
-  //   }
-  // }, [search]);
-  
 
   return (
     <Drawer>
       <Box sx={{ padding: 2 }}>
-        <Box sx={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
-          <TextField
-            label="Search Subcategory"
-            variant="outlined"
-            value={search}
-            onChange={handleSearch}
-            sx={{ width: "100%" }}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={9}>
+            <TextField
+              fullWidth
+              label="Search Subcategory"
+              variant="outlined"
+              value={search}
+              onChange={handleSearch}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<AddIcon />}
+              sx={{ backgroundColor: "#79797a" }}
+              onClick={() => {
+                setEid(null);
+                formik.resetForm();
+                handleClickOpen();
+              }}
+            >
+              Add Subcategory
+            </Button>
+          </Grid>
+        </Grid>
+        <Box sx={{ marginTop: 2 }}>
+          <TableComponent
+            TableHeader={TableHeader}
+            TableData={subcategory}
+            renderRow={(row, index) => (
+              <>
+                <TableCell>{index + 1}</TableCell>
+                <TableCell>{row.subCatagoryname}</TableCell>
+                <TableCell>{row.catagoryID?.catagoryName}</TableCell>
+                <TableCell>
+                  <Switch
+                    checked={row.status === "on"}
+                    onChange={() => switchToggle(row._id)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" color="error" onClick={() => deleteData(row._id)}>
+                    <DeleteIcon />
+                  </Button>
+                </TableCell>
+                <TableCell>
+                  <Button variant="contained" color="success" onClick={() => updateData(row._id)}>
+                    <EditIcon />
+                  </Button>
+                </TableCell>
+              </>
+            )}
           />
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            sx={{ backgroundColor: "#79797a" }}
-            onClick={() => {
-              setEid(null);
-              formik.resetForm();
-              handleClickOpen();
-            }}
-          >
-            Add Subcategory
-          </Button>
         </Box>
-        <TableComponent
-          TableHeader={TableHeader}
-          TableData={subcategory}
-          renderRow={(row, index) => (
-            <>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{row.subCatagoryname}</TableCell>
-              <TableCell>{row.catagoryID?.catagoryName}</TableCell>
-              <TableCell>
-                <Switch
-                  checked={row.status === "on"}
-                  onChange={() => switchToggle(row._id)}
-                />
-              </TableCell>
-              <TableCell>
-                <Button variant="contained" color="error" onClick={() => deleteData(row._id)}>
-                  <DeleteIcon />
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="contained" color="success" onClick={() => updateData(row._id)}>
-                  <EditIcon />
-                </Button>
-              </TableCell>
-            </>
-          )}
-        />
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth={isSmallScreen ? "xs" : "sm"}>
         <DialogTitle>{eid ? "Update Subcategory" : "Add Subcategory"}</DialogTitle>
         <form onSubmit={formik.handleSubmit}>
           <DialogContent>
@@ -261,4 +243,3 @@ const SubCategory = () => {
 };
 
 export default SubCategory;
-

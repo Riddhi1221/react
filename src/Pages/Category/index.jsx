@@ -6,15 +6,15 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Box, Switch, TableCell } from "@mui/material";
+import { Grid, Box, Switch, TableCell } from "@mui/material";
 import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 import { ToastContainer, toast } from "react-toastify";
 import TableComponent from "../../Components/TableComponent";
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Category = () => {
   let token = localStorage.getItem("Token");
@@ -22,6 +22,7 @@ const Category = () => {
   let [eid, setEid] = useState(null);
   let [search, setSearch] = useState("");
   let TableHeader = ["Index", "Category Name", "Status", "Delete", "Update"];
+
   const formik = useFormik({
     initialValues: {
       catagoryName: "",
@@ -82,34 +83,32 @@ const Category = () => {
         }
       );
       setCategory(res.data.data);
-      localStorage.setItem("category",JSON.stringify(res.data.data.length))
+      localStorage.setItem("category", JSON.stringify(res.data.data.length));
     } catch (error) {
       console.log(error);
     }
   };
-  const searchCat = (values) => {
-    console.log("search===>", values)
-    axios.get("https://interviewhub-3ro7.onrender.com/catagory/?search=" + values, {
-        headers: {
-            Authorization: token,
-        },
-    })
-        .then((res) => {
-            console.log(res)
-            setCategory(res.data.data);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
-};
 
-const handleSearch = (e) => {
-    console.log(e)
+  const searchCat = (values) => {
+    axios
+      .get("https://interviewhub-3ro7.onrender.com/catagory/?search=" + values, {
+        headers: {
+          Authorization: token,
+        },
+      })
+      .then((res) => {
+        setCategory(res.data.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleSearch = (e) => {
     const value = e.target.value;
-    console.log("search==>", value)
     setSearch(value);
     searchCat(value);
-};
+  };
 
   function updateData(id) {
     setEid(id);
@@ -121,7 +120,7 @@ const handleSearch = (e) => {
   async function switchToggle(id) {
     let findData = category.find((el) => el._id === id);
     try {
-      let res = await axios.patch(
+      await axios.patch(
         `https://interviewhub-3ro7.onrender.com/catagory/${id}`,
         { status: findData.status === "on" ? "off" : "on" },
         {
@@ -159,42 +158,37 @@ const handleSearch = (e) => {
 
   return (
     <Drawer>
-      <Box sx={{Padding:2}}>
-     <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 2
-          }}
-        >
-           <TextField
-             label="Search Q&A"
-             variant="outlined"
-             value={search}
-             onChange={handleSearch}
-             sx={{ width: "60%" }}
-           />
-          <Button 
+      <Grid container spacing={2} sx={{ p: 2 }}>
+        {/* Search and Add Category */}
+        <Grid item xs={12} md={8}>
+          <TextField
+            label="Search Q&A"
+            variant="outlined"
+            value={search}
+            onChange={handleSearch}
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12} md={4} sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
             variant="contained"
             startIcon={<AddIcon />}
-            sx={{backgroundColor:"#79797a"}}
+            sx={{ backgroundColor: "#79797a" }}
             onClick={() => {
               setEid(null);
               setOpen(true);
-            
             }}
           >
             Add Category
           </Button>
-        </Box>
-        </Box>
-      <Box sx={{ width: "100%" }}>
-        <TableComponent
-          TableHeader={TableHeader}
-          TableData={category}
-          renderRow={(row, index) => {
-            return (
+        </Grid>
+
+        {/* Table */}
+        <Grid item xs={12}>
+          <TableComponent
+            TableHeader={TableHeader}
+            TableData={category}
+            renderRow={(row, index) => (
               <>
                 <TableCell component="th" scope="row" align="left">
                   {index + 1}
@@ -210,7 +204,7 @@ const handleSearch = (e) => {
                   <Button
                     variant="contained"
                     onClick={() => deleteData(row._id)}
-                    sx={{backgroundColor:"red"}}
+                    sx={{ backgroundColor: "red" }}
                   >
                     <DeleteIcon />
                   </Button>
@@ -219,24 +213,25 @@ const handleSearch = (e) => {
                   <Button
                     variant="contained"
                     onClick={() => updateData(row._id)}
-                    sx={{backgroundColor:"green"}}
+                    sx={{ backgroundColor: "green" }}
                   >
                     <EditIcon />
                   </Button>
                 </TableCell>
               </>
-            );
-          }}
-        />
-      </Box>
+            )}
+          />
+        </Grid>
+      </Grid>
 
+      {/* Dialog */}
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        fullWidth
+        maxWidth="sm"
       >
-        <DialogTitle id="alert-dialog-title">{"Add Category"}</DialogTitle>
+        <DialogTitle>{"Add Category"}</DialogTitle>
         <form onSubmit={formik.handleSubmit}>
           <DialogContent>
             <TextField
@@ -244,6 +239,7 @@ const handleSearch = (e) => {
               name="catagoryName"
               onChange={formik.handleChange}
               value={formik.values.catagoryName}
+              fullWidth
             />
           </DialogContent>
           <DialogActions>
@@ -253,8 +249,9 @@ const handleSearch = (e) => {
           </DialogActions>
         </form>
       </Dialog>
+
       <ToastContainer />
-    </Drawer >
+    </Drawer>
   );
 };
 
