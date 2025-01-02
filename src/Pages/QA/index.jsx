@@ -13,6 +13,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import TableComponent from "../../Components/TableComponent";
 import AddIcon from "@mui/icons-material/Add";
@@ -37,6 +38,7 @@ const QA = () => {
     answer: "",
     subcatagoryID: "",
   });
+  const [loading, setLoading] = useState(true);  // Add loading state
 
   const tableHeaders = [
     "Index",
@@ -50,6 +52,7 @@ const QA = () => {
 
   // Fetch Q&A data
   const fetchQAData = async () => {
+    setLoading(true);  // Start loading
     try {
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/questions/", {
         headers: { Authorization: token },
@@ -62,9 +65,10 @@ const QA = () => {
     } catch (error) {
       console.error("Error fetching Q&A data:", error);
       toast.error("Failed to fetch Q&A data. Please try again later.");
+    } finally {
+      setLoading(false);  // End loading
     }
   };
-  
 
   // Fetch categories and subcategories
   const fetchCategories = async () => {
@@ -193,38 +197,47 @@ const QA = () => {
           </Grid>
         </Grid>
 
-        {/* Q&A Table */}
-        <TableComponent
-          TableHeader={tableHeaders}
-          TableData={filteredQAData}
-          renderRow={(row, index) => (
-            <>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{row.questions}</TableCell>
-              <TableCell>{row.answer}</TableCell>
-              <TableCell>{row.subcatagoryID?.subCatagoryname}</TableCell>
-              <TableCell>{row.subcatagoryID?.catagoryID?.catagoryName}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="error"
-                  onClick={() => handleDelete(row._id)}
-                >
-                  <DeleteIcon />
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={() => openDialog(row)}
-                >
-                  <EditIcon />
-                </Button>
-              </TableCell>
-            </>
-          )}
-        />
+        {/* Loading Spinner */}
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            {/* Q&A Table */}
+            <TableComponent
+              TableHeader={tableHeaders}
+              TableData={filteredQAData}
+              renderRow={(row, index) => (
+                <>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{row.questions}</TableCell>
+                  <TableCell>{row.answer}</TableCell>
+                  <TableCell>{row.subcatagoryID?.subCatagoryname}</TableCell>
+                  <TableCell>{row.subcatagoryID?.catagoryID?.catagoryName}</TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleDelete(row._id)}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => openDialog(row)}
+                    >
+                      <EditIcon />
+                    </Button>
+                  </TableCell>
+                </>
+              )}
+            />
+          </>
+        )}
       </Box>
 
       {/* Add/Edit Dialog */}

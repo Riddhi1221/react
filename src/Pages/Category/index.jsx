@@ -81,12 +81,16 @@ const Category = () => {
           },
         }
       );
-      setCategory(res.data.data);
-      localStorage.setItem("category", JSON.stringify(res.data.data.length));
+  
+      // Sort categories by 'catagoryName' in ascending order
+      let sortedData = res.data.data.sort((a, b) => a.catagoryName.localeCompare(b.catagoryName));
+      setCategory(sortedData); // Update state with sorted categories
+      localStorage.setItem("category", JSON.stringify(sortedData.length));
     } catch (error) {
       console.log(error);
     }
   };
+  
 
   const searchCat = (values) => {
     axios

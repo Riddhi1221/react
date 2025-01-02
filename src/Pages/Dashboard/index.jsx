@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import CategoryIcon from "@mui/icons-material/Category";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
@@ -15,6 +16,7 @@ import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 const Dashboard = () => {
   const [cardData, setCardData] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -48,6 +50,7 @@ const Dashboard = () => {
     ];
 
     setCardData(updatedCardData);
+    setLoading(false); // Data is ready, stop loading
   }, []);
 
   useEffect(() => {
@@ -66,55 +69,64 @@ const Dashboard = () => {
   return (
     <Drawer>
       <Box sx={{ flexGrow: 1, padding: 2 }}>
-        {/* Card Section */}
-        <Grid container spacing={2}>
-          {cardData.map((card, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  padding: 2,
-                  backgroundColor: card.bgColor,
-                  boxShadow: 2,
-                  borderRadius: 2,
-                }}
-              >
-                <Box sx={{ marginRight: 2 }}>{card.icon}</Box>
-                <CardContent>
-                  <Typography variant="h6">{card.title}</Typography>
-                  <Typography variant="h4" fontWeight="bold">
-                    {card.value}
-                  </Typography>
-                </CardContent>
-              </Card>
+        {/* Loading Spinner */}
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>
+            {/* Card Section */}
+            <Grid container spacing={2}>
+              {cardData.map((card, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Card
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      padding: 2,
+                      backgroundColor: card.bgColor,
+                      boxShadow: 2,
+                      borderRadius: 2,
+                    }}
+                  >
+                    <Box sx={{ marginRight: 2 }}>{card.icon}</Box>
+                    <CardContent>
+                      <Typography variant="h6">{card.title}</Typography>
+                      <Typography variant="h4" fontWeight="bold">
+                        {card.value}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
 
-        {/* Pie Chart Section */}
-        <Box sx={{ marginTop: 4 }}>
-          <Typography variant="h5" align="center" sx={{ marginBottom: 3 }}>
-            Data Distribution
-          </Typography>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={pieChartData}
-                dataKey="value"
-                nameKey="name"
-                outerRadius={100}
-                fill="#8884d8"
-                label
-              >
-                {pieChartData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-              </Pie>
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </Box>
+            {/* Pie Chart Section */}
+            <Box sx={{ marginTop: 4 }}>
+              <Typography variant="h5" align="center" sx={{ marginBottom: 3 }}>
+                Data Distribution
+              </Typography>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={pieChartData}
+                    dataKey="value"
+                    nameKey="name"
+                    outerRadius={100}
+                    fill="#8884d8"
+                    label
+                  >
+                    {pieChartData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            </Box>
+          </>
+        )}
       </Box>
     </Drawer>
   );

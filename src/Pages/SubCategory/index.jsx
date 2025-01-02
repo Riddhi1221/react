@@ -6,7 +6,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { Box, Switch, TableCell, MenuItem, Select, InputLabel, FormControl, Grid } from "@mui/material";
+import { Box, Switch, TableCell, MenuItem, Select, InputLabel, FormControl, Grid, CircularProgress } from "@mui/material";
 import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
@@ -24,6 +24,7 @@ const SubCategory = () => {
   const [eid, setEid] = useState(null);
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true); // Add loading state
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -63,17 +64,19 @@ const SubCategory = () => {
   // Fetch data functions
   const dataFetch = async () => {
     try {
+      setLoading(true); // Set loading to true while fetching
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/subcatagory/", {
         headers: { Authorization: token },
       });
       const fetchedData = res.data.data;
       setSubCategory(fetchedData);
-      // Store the length of the fetched data in localStorage
       localStorage.setItem("subcategory", fetchedData.length);
       console.log("Fetched Subcategories:", fetchedData); // Debugging log
     } catch (error) {
       console.error("Error fetching subcategories:", error);
       toast.error("Failed to fetch subcategories. Please try again later.");
+    } finally {
+      setLoading(false); // Set loading to false when done
     }
   };
 
@@ -146,104 +149,112 @@ const SubCategory = () => {
 
   return (
     <Drawer>
-    <Box sx={{ padding: 2 }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={9}>
-          <TextField
-            fullWidth
-            label="Search Subcategory"
-            variant="outlined"
-            value={search}
-            onChange={handleSearch}
-          />
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Button
-            fullWidth
-            variant="contained"
-            startIcon={<AddIcon />}
-            sx={{ backgroundColor: "#79797a" }}
-            onClick={() => {
-              setEid(null);
-              formik.resetForm();
-              handleClickOpen();
-            }}
-          >
-            Add Subcategory
-          </Button>
-        </Grid>
-      </Grid>
-      <Box sx={{ marginTop: 2, overflowX: 'auto' }}> {/* Make table scrollable */}
-        <TableComponent
-          TableHeader={TableHeader}
-          TableData={subcategory}
-          renderRow={(row, index) => (
-            <>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{row.subCatagoryname}</TableCell>
-              <TableCell>{row.catagoryID?.catagoryName}</TableCell>
-              <TableCell>
-                <Switch
-                  checked={row.status === "on"}
-                  onChange={() => switchToggle(row._id)}
-                />
-              </TableCell>
-              <TableCell>
-                <Button variant="contained" color="error" onClick={() => deleteData(row._id)}>
-                  <DeleteIcon />
-                </Button>
-              </TableCell>
-              <TableCell>
-                <Button variant="contained" color="success" onClick={() => updateData(row._id)}>
-                  <EditIcon />
-                </Button>
-              </TableCell>
-            </>
-          )}
-        />
-      </Box>
-    </Box>
-
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth={isSmall ? "xs" : "sm"}>
-      <DialogTitle>{eid ? "Update Subcategory" : "Add Subcategory"}</DialogTitle>
-      <form onSubmit={formik.handleSubmit}>
-        <DialogContent>
-          <TextField
-            fullWidth
-            label="Subcategory Name"
-            name="subCatagoryname"
-            onChange={formik.handleChange}
-            value={formik.values.subCatagoryname}
-            error={formik.touched.subCatagoryname && Boolean(formik.errors.subCatagoryname)}
-            helperText={formik.touched.subCatagoryname && formik.errors.subCatagoryname}
-            sx={{ marginBottom: 2 }}
-          />
-          <FormControl fullWidth>
-            <InputLabel>Category</InputLabel>
-            <Select
-              name="catagoryID"
-              value={formik.values.catagoryID}
-              onChange={formik.handleChange}
-              error={formik.touched.catagoryID && Boolean(formik.errors.catagoryID)}
+      <Box sx={{ padding: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={9}>
+            <TextField
+              fullWidth
+              label="Search Subcategory"
+              variant="outlined"
+              value={search}
+              onChange={handleSearch}
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<AddIcon />}
+              sx={{ backgroundColor: "#79797a" }}
+              onClick={() => {
+                setEid(null);
+                formik.resetForm();
+                handleClickOpen();
+              }}
             >
-              {categories.map((cat) => (
-                <MenuItem key={cat._id} value={cat._id}>
-                  {cat.catagoryName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" type="submit">
-            {eid ? "Update" : "Add"} Subcategory
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
-    <ToastContainer />
-  </Drawer>
-);
+              Add Subcategory
+            </Button>
+          </Grid>
+        </Grid>
+
+        {/* Show loading spinner while fetching data */}
+        {loading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+            <CircularProgress />
+          </Box>
+        ) : (
+          <Box sx={{ marginTop: 2, overflowX: 'auto' }}>
+            <TableComponent
+              TableHeader={TableHeader}
+              TableData={subcategory}
+              renderRow={(row, index) => (
+                <>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{row.subCatagoryname}</TableCell>
+                  <TableCell>{row.catagoryID?.catagoryName}</TableCell>
+                  <TableCell>
+                    <Switch
+                      checked={row.status === "on"}
+                      onChange={() => switchToggle(row._id)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="error" onClick={() => deleteData(row._id)}>
+                      <DeleteIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button variant="contained" color="success" onClick={() => updateData(row._id)}>
+                      <EditIcon />
+                    </Button>
+                  </TableCell>
+                </>
+              )}
+            />
+          </Box>
+        )}
+      </Box>
+
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth={isSmall ? "xs" : "sm"}>
+        <DialogTitle>{eid ? "Update Subcategory" : "Add Subcategory"}</DialogTitle>
+        <form onSubmit={formik.handleSubmit}>
+          <DialogContent>
+            <TextField
+              fullWidth
+              label="Subcategory Name"
+              name="subCatagoryname"
+              onChange={formik.handleChange}
+              value={formik.values.subCatagoryname}
+              error={formik.touched.subCatagoryname && Boolean(formik.errors.subCatagoryname)}
+              helperText={formik.touched.subCatagoryname && formik.errors.subCatagoryname}
+              sx={{ marginBottom: 2 }}
+            />
+            <FormControl fullWidth>
+              <InputLabel>Category</InputLabel>
+              <Select
+                name="catagoryID"
+                value={formik.values.catagoryID}
+                onChange={formik.handleChange}
+                error={formik.touched.catagoryID && Boolean(formik.errors.catagoryID)}
+              >
+                {categories.map((cat) => (
+                  <MenuItem key={cat._id} value={cat._id}>
+                    {cat.catagoryName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </DialogContent>
+          <DialogActions>
+            <Button variant="contained" type="submit">
+              {eid ? "Update" : "Add"} Subcategory
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
+      <ToastContainer />
+    </Drawer>
+  );
 };
 
 export default SubCategory;
