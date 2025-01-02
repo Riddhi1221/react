@@ -47,6 +47,15 @@ const CategoryData = () => {
     filterCategories(category, newShowAll);
   };
 
+  // Handle category click
+  const handleCategoryClick = (categoryName) => {
+    if (!token) {
+      navigate("/login", { state: { redirectTo: "/category" } });
+    } else {
+      navigate("/SubcatagoryData", { state: { category: categoryName } });
+    }
+  };
+
   // Fetch categories on component mount
   useEffect(() => {
     fetchCategories();
@@ -109,29 +118,25 @@ const CategoryData = () => {
             {filteredCategories.length > 0 ? (
               filteredCategories.map((category, index) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={category._id}>
-                  <Link
-                    to="/SubcatagoryData"
-                    state={{ category: category.catagoryName }}
-                    style={{ textDecoration: "none" }}
+                  <Box
+                    onClick={() => handleCategoryClick(category.catagoryName)}
+                    sx={{
+                      background: "#eef7fd",
+                      padding: "20px",
+                      borderRadius: "8px",
+                      boxShadow: "inset 0 0 10px #4b81a8",
+                      textAlign: "center",
+                      transition: "transform 0.2s ease",
+                      cursor: "pointer",
+                      "&:hover": {
+                        transform: "scale(1.05)",
+                      },
+                    }}
                   >
-                    <Box
-                      sx={{
-                        background: "#eef7fd",
-                        padding: "20px",
-                        borderRadius: "8px",
-                        boxShadow: "inset 0 0 10px #4b81a8",
-                        textAlign: "center",
-                        transition: "transform 0.2s ease",
-                        "&:hover": {
-                          transform: "scale(1.05)",
-                        },
-                      }}
-                    >
-                      <Typography variant="h6" sx={{ color: "#124265" }}>
-                        {index + 1}. {category.catagoryName}
-                      </Typography>
-                    </Box>
-                  </Link>
+                    <Typography variant="h6" sx={{ color: "#124265" }}>
+                      {index + 1}. {category.catagoryName}
+                    </Typography>
+                  </Box>
                 </Grid>
               ))
             ) : (
@@ -150,5 +155,3 @@ const CategoryData = () => {
 };
 
 export default CategoryData;
-
-

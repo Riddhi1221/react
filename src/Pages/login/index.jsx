@@ -7,70 +7,72 @@ import {
   IconButton,
   FormControl,
   TextField,
+  CircularProgress,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import EmailIcon from "@mui/icons-material/Email";
 import { useFormik } from "formik";
 import axios from "axios";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import * as Yup from "yup";
 
 const Login = () => {
-  let Token = localStorage.getItem("Token");
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // Show or hide password
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
+  // Validation schema for form
   const loginSchema = Yup.object().shape({
     password: Yup.string()
       .min(8, "Too Short!")
       .max(10, "Too Long!")
-      .required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
+      .required("Password is required"),
+    email: Yup.string().email("Invalid email").required("Email is required"),
   });
 
+  // Formik setup
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
       setLoader(true);
       try {
-        console.log(values);
         const response = await axios.post(
           "https://interviewhub-3ro7.onrender.com/admin/login",
           values
         );
         localStorage.setItem("Token", response.data.token);
-        toast.success(response.data.message, {
-          theme: "dark",
-        });
-        navigate("/admin");
+        toast.success(response.data.message, { theme: "dark" });
+
+        // Redirect to the intended page or dashboard
+        const redirectTo = location.state?.redirectTo || "/dashboard";
+        navigate(redirectTo);
       } catch (error) {
-        console.error("Login failed:", error.message);
-        toast.error("Login failed. Please try again.");
+        console.error("Login failed:", error.response?.data?.message || error.message);
+        toast.error("Login failed. Please check your credentials.");
       } finally {
         setLoader(false);
       }
     },
   });
 
+  // Redirect if already logged in
   useEffect(() => {
+    const Token = localStorage.getItem("Token");
     if (Token) {
       navigate("/dashboard");
     }
-  }, [Token, navigate]);
-
-  if (loader) {
-    return <h1>Loading...</h1>;
-  }
+  }, [navigate]);
 
   return (
     <Box
@@ -164,7 +166,7 @@ const Login = () => {
             type="submit"
             variant="contained"
             fullWidth
-            disabled={formik.isSubmitting}
+            disabled={formik.isSubmitting || loader}
             sx={{
               py: 1.5,
               fontWeight: "bold",
@@ -175,7 +177,7 @@ const Login = () => {
               },
             }}
           >
-            {formik.isSubmitting ? "Logging in..." : "Login"}
+            {loader ? <CircularProgress size={24} color="inherit" /> : "Login"}
           </Button>
         </form>
       </Box>
