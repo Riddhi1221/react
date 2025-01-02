@@ -112,7 +112,7 @@ const Footer = () => {
         >
           Designed by{" "}
           <a href="/" style={{ color: "#eef7fd", textDecoration: "none" }}>
-            Chandrika Sarvaiya
+            Riddhi Chheta
           </a>
         </Typography>
       </Box>
