@@ -161,7 +161,7 @@ const Category = () => {
         {/* Search and Add Category */}
         <Grid item xs={12} md={8}>
           <TextField
-            label="Search Q&A"
+            label="Search category"
             variant="outlined"
             value={search}
             onChange={handleSearch}
