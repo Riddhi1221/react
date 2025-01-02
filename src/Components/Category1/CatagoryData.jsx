@@ -1,51 +1,55 @@
-import { Container, Typography, Box, Button, Grid } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import { Container, Typography, Box, Button, Grid } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
+import axios from "axios";
+import Navbar from "../Navbar";
+import Footer from "../Footer";
 
-const CatagoryData = () => {
+const CategoryData = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const [categories, setCategories] = useState([]);
-  const [filterCat, setFilterCat] = useState([]);
+  const token = localStorage.getItem("Token");
+  const [category, setCategory] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
   const [showAll, setShowAll] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-        const getCategory = () => {
-          axios.get('https://interviewhub-3ro7.onrender.com/catagory/', {
-            headers: {
-              Authorization: token,
-            }
-          })
-          .then((res) => {
-            const data = res.data.data;
-            setCategories(res.data.data);
-            filterCategories(data, showAll);
-          })
-          .catch((err) => {
-            console.log("err", err);
-          });
-        }
-
-  const filterCategories = (data, showAll) => {
-    if (showAll) {
-      setFilterCat(data);
-    } else {
-      const filtered = data.filter((el) => el.status === 'on');
-      setFilterCat(filtered);
+  // Fetch categories from API
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get("https://interviewhub-3ro7.onrender.com/catagory/", {
+        headers: {
+          Authorization: token,
+        },
+      });
+      const data = response.data.data;
+      setCategory(data);
+      filterCategories(data, showAll);
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+      setError("Failed to fetch categories. Please try again later.");
     }
   };
 
+  // Filter categories based on status
+  const filterCategories = (data, showAll) => {
+    if (showAll) {
+      setFilteredCategories(data);
+    } else {
+      const activeCategories = data.filter((category) => category.status === "on");
+      setFilteredCategories(activeCategories);
+    }
+  };
+
+  // Toggle between all categories and active categories
   const toggleCategoryView = () => {
     const newShowAll = !showAll;
     setShowAll(newShowAll);
-    filterCategories(categories, newShowAll);
+    filterCategories(category, newShowAll);
   };
 
+  // Fetch categories on component mount
   useEffect(() => {
-    getCategory();
+    fetchCategories();
   }, []);
 
   return (
@@ -63,9 +67,11 @@ const CatagoryData = () => {
               gap: 2,
             }}
           >
-            <Typography variant="h4" sx={{ color: "#124265" }}>Category</Typography>
+            <Typography variant="h4" sx={{ color: "#124265" }}>
+              Category
+            </Typography>
             <Typography>
-              <Link to="/" style={{ textDecoration: 'none', color: "#4b81a8" }}>
+              <Link to="/" style={{ textDecoration: "none", color: "#4b81a8" }}>
                 Home
               </Link>{" "}
               / Category
@@ -80,7 +86,7 @@ const CatagoryData = () => {
               alignSelf: "flex-end",
             }}
           >
-            {showAll ? 'Show Only Active Categories' : 'Show All Categories'}
+            {showAll ? "Show Only Active Categories" : "Show All Categories"}
           </Button>
         </Container>
       </Box>
@@ -92,7 +98,7 @@ const CatagoryData = () => {
             variant="h4"
             sx={{ textAlign: "center", color: "#124265", marginBottom: "20px" }}
           >
-            {showAll ? 'All Categories' : 'Active Categories'}
+            {showAll ? "All Categories" : "Active Categories"}
           </Typography>
           {error && (
             <Typography color="error" sx={{ textAlign: "center", marginBottom: "20px" }}>
@@ -100,13 +106,13 @@ const CatagoryData = () => {
             </Typography>
           )}
           <Grid container spacing={3} justifyContent="center">
-            {filterCat.length > 0 ? (
-              filterCat.map((item, i) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={i}>
+            {filteredCategories.length > 0 ? (
+              filteredCategories.map((category, index) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={category._id}>
                   <Link
                     to="/SubcatagoryData"
-                    state={{ category: item.catagoryName }}
-                    style={{ textDecoration: 'none' }}
+                    state={{ category: category.catagoryName }}
+                    style={{ textDecoration: "none" }}
                   >
                     <Box
                       sx={{
@@ -121,11 +127,8 @@ const CatagoryData = () => {
                         },
                       }}
                     >
-                      <Typography
-                        variant="h6"
-                        sx={{ color: "#124265" }}
-                      >
-                        {i + 1}. {item.catagoryName}
+                      <Typography variant="h6" sx={{ color: "#124265" }}>
+                        {index + 1}. {category.catagoryName}
                       </Typography>
                     </Box>
                   </Link>
@@ -146,4 +149,6 @@ const CatagoryData = () => {
   );
 };
 
-export default CatagoryData;
+export default CategoryData;
+
+

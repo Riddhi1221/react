@@ -67,9 +67,14 @@ const SubCategory = () => {
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/subcatagory/", {
         headers: { Authorization: token },
       });
-      setSubCategory(res.data.data);
+      const fetchedData = res.data.data;
+      setSubCategory(fetchedData);
+      // Store the length of the fetched data in localStorage
+      localStorage.setItem("subcategory", fetchedData.length);
+      console.log("Fetched Subcategories:", fetchedData); // Debugging log
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching subcategories:", error);
+      toast.error("Failed to fetch subcategories. Please try again later.");
     }
   };
 

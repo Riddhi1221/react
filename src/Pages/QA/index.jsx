@@ -54,12 +54,17 @@ const QA = () => {
       const res = await axios.get("https://interviewhub-3ro7.onrender.com/questions/", {
         headers: { Authorization: token },
       });
-      setQAData(res.data.data);
+      const fetchedData = res.data.data;
+      setQAData(fetchedData);
+      // Store the length of the fetched data in localStorage
+      localStorage.setItem("question", fetchedData.length.toString());
+      console.log("Fetched Q&A Data:", fetchedData); // Debugging log
     } catch (error) {
       console.error("Error fetching Q&A data:", error);
       toast.error("Failed to fetch Q&A data. Please try again later.");
     }
   };
+  
 
   // Fetch categories and subcategories
   const fetchCategories = async () => {

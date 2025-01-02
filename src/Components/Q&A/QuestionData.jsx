@@ -6,7 +6,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 
 const QuestionData = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('Token');
 
   const [allQues, setAllQues] = useState([]);
   const [filterQues, setFilterQues] = useState([]);

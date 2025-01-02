@@ -6,7 +6,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 
 const SubcategoryData = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('Token');
 
   const [allSubcategories, setAllSubcategories] = useState([]);
   const [filteredSubcategories, setFilteredSubcategories] = useState([]);

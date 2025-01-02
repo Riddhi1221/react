@@ -10,7 +10,6 @@ import { Grid, Box, Switch, TableCell } from "@mui/material";
 import { useFormik } from "formik";
 import AddIcon from "@mui/icons-material/Add";
 import axios from "axios";
-import Typography from "@mui/material/Typography";
 import { ToastContainer, toast } from "react-toastify";
 import TableComponent from "../../Components/TableComponent";
 import DeleteIcon from "@mui/icons-material/Delete";
