@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Box, Grid, CircularProgress } from '@mui/material';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
+import Navbar1 from "../Mainlogin/Navbar1";
+import Footer1 from "../Mainlogin/Footer1";
 
 const SubcategoryData = () => {
   const token = localStorage.getItem('Token');
@@ -48,7 +48,7 @@ const SubcategoryData = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar1 />
       {/* Header Section */}
       <Typography
         component="div"
@@ -72,7 +72,7 @@ const SubcategoryData = () => {
               Sub Category
             </Typography>
             <Typography sx={{ fontSize: "16px", color: "#4b81a8" }}>
-              <Link to="/" style={{ textDecoration: "none", color: "#4b81a8" }}>
+              <Link to="/Mainpage1" style={{ textDecoration: "none", color: "#4b81a8" }}>
                 Home
               </Link>{" "}
               / SubCategory
@@ -179,7 +179,7 @@ const SubcategoryData = () => {
           )}
         </Container>
       </Box>
-      <Footer />
+      <Footer1 />
     </>
   );
 };

@@ -10,8 +10,8 @@ import InterestsIcon from '@mui/icons-material/Interests';
 import ControlPointDuplicateIcon from '@mui/icons-material/ControlPointDuplicate';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import image from '../../images/interviews.png';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
+import Navbar1 from "../Navbar1";
+import Footer1 from "../Footer1";
 import { useNavigate } from 'react-router-dom'; 
 
 const Mainpage = () => {
@@ -24,7 +24,7 @@ const Mainpage = () => {
 
   const handleCardClick = (link) => {
     if (!token) {
-      navigate('/login');
+      navigate('/signup');
     } else {
       navigate(link);
     }
@@ -32,7 +32,7 @@ const Mainpage = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar1 />
 
       {/* Hero Section */}
       <section className="slider" style={{ padding: "50px 0" }}>
@@ -45,17 +45,14 @@ const Mainpage = () => {
           <Typography component="p" sx={{ marginTop: "10px", fontSize: { xs: "16px", sm: "20px", md: "22px" }, textAlign: "center", letterSpacing: "1px" }}>
             All your hard work will pay off. My best wishes are with you.
           </Typography>
-          <Typography sx={{ textAlign: "center", marginTop: "30px" }}>
-            <Button className='slider-btn' sx={{ color: "#fff", border: "1px solid #fff", padding: "14px 50px", borderRadius: "4px", background: "#4b81a8", zIndex: "10" }}><a href='/login' style={{color:'#fff'}}>Get Started</a></Button>
-          </Typography>
 
           {/* Cards Section */}
           <Container sx={{ mt: 5, mb: 5 }}>
             <Grid container spacing={3}>
               {[
-                { title: "Category", icon: <InterestsIcon />, link: "/CatagoryData" },
-                { title: "Sub Category", icon: <ControlPointDuplicateIcon />, link: "/SubcatagoryData" },
-                { title: "Que - Ans", icon: <HelpOutlineIcon />, link: "/QuestionData" },
+                { title: "Category", icon: <InterestsIcon />, link: "/CatagoryData1" },
+                { title: "Sub Category", icon: <ControlPointDuplicateIcon />, link: "/SubcatagoryData1" },
+                { title: "Que - Ans", icon: <HelpOutlineIcon />, link: "/QuestionData1" },
               ].map((item, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                   <Card sx={{ textAlign: "center", height: "100%" }}>
@@ -140,7 +137,7 @@ const Mainpage = () => {
         </Container>
       </section>
 
-      <Footer />
+      <Footer1 />
     </>
   );
 };

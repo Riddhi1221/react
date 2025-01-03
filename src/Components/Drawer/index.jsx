@@ -156,7 +156,7 @@ useEffect(() => {
         
           <Box sx={{margin:"5px"}}>
           <Button variant="contained" onClick={logoutPanel} sx={{background:"transparent", boxShadow:"none", color:"white"}}><a href="/" style={{margin:"5px 5px",color:"white"}}><Logout /></a></Button>
-          <Button><a href="/" style={{margin:"5px 5px",color:"white"}}>Home</a></Button>
+          <Button><a href="/Mainpage1" style={{margin:"5px 5px",color:"white"}}>Home</a></Button>
           </Box>
         </Toolbar>
       </AppBar>

@@ -21,6 +21,12 @@ const Dashboard = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    // Simulate loading of data from localStorage or API
     const categoryCount = parseInt(localStorage.getItem("category")) || 0;
     const subcategoryCount = parseInt(localStorage.getItem("subcategory")) || 0;
     const questionCount = parseInt(localStorage.getItem("question")) || 0;
@@ -51,12 +57,6 @@ const Dashboard = () => {
 
     setCardData(updatedCardData);
     setLoading(false); // Data is ready, stop loading
-  }, []);
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login");
-    }
   }, [token, navigate]);
 
   const pieChartData = cardData.map((item) => ({

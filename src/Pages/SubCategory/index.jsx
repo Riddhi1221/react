@@ -53,7 +53,7 @@ const SubCategory = () => {
         resetForm();
         setEid(null);
         handleClose();
-        dataFetch();
+        dataFetch(); // Refresh data after submitting
       } catch (error) {
         console.error(error);
         toast.error("An error occurred while saving the subcategory.");

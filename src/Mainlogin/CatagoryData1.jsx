@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Container, Typography, Box, Button, Grid, CircularProgress } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "../Navbar";
-import Footer from "../Footer";
+import Navbar1 from "../Mainlogin/Navbar1";
+import Footer1 from "../Mainlogin/Footer1";
 
-const CategoryData = () => {
+const CategoryData1 = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("Token");
   const [category, setCategory] = useState([]);
@@ -72,7 +72,7 @@ const CategoryData = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar1 />
       {/* Header Section */}
       <Box sx={{ padding: "50px 0", background: "#eef7fd", borderBottom: "1px solid #4b81a8" }}>
         <Container>
@@ -89,7 +89,7 @@ const CategoryData = () => {
               Category
             </Typography>
             <Typography>
-              <Link to="/" style={{ textDecoration: "none", color: "#4b81a8" }}>
+              <Link to="/Mainpage1" style={{ textDecoration: "none", color: "#4b81a8" }}>
                 Home
               </Link>{" "}
               / Category
@@ -166,9 +166,9 @@ const CategoryData = () => {
           )}
         </Container>
       </Box>
-      <Footer />
+      <Footer1 />
     </>
   );
 };
 
-export default CategoryData;
+export default CategoryData1;

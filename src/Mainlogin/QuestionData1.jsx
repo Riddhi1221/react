@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Container, Typography, Box, Grid, CircularProgress } from '@mui/material';
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
-import Navbar from '../Navbar';
-import Footer from '../Footer';
+
+import Footer1 from "../Mainlogin/Footer1";
+import Navbar1 from './Navbar1';
 
 const QuestionData = () => {
   const token = localStorage.getItem('Token');
@@ -45,7 +46,7 @@ const QuestionData = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar1 />
       {/* Header Section */}
       <Box
         sx={{
@@ -68,7 +69,7 @@ const QuestionData = () => {
               Ques - Ans
             </Typography>
             <Typography sx={{ fontSize: "16px", color: "#4b81a8" }}>
-              <Link to="/" style={{ textDecoration: "none", color: "#4b81a8" }}>
+              <Link to="/Mainpage1" style={{ textDecoration: "none", color: "#4b81a8" }}>
                 Home
               </Link>{" "}
               / Ques - Ans
@@ -177,7 +178,7 @@ const QuestionData = () => {
           )}
         </Container>
       </Box>
-      <Footer />
+      <Footer1 />
     </>
   );
 };
