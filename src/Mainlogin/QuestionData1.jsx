@@ -21,7 +21,7 @@ const QuestionData = () => {
     if (!token) {
       navigate("/login", { state: { redirectTo: "/QuestionData" } });
     } else {
-      axios.get('https://interviewhub-3ro7.onrender.com/questions/', {
+      axios.get('https://interviewback-ucb4.onrender.com/questions/', {
         headers: {
           Authorization: token,
         }

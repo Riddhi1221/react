@@ -109,9 +109,9 @@ const Footer1 = () => {
           sx={{
             fontSize: { xs: "14px", sm: "16px" },
           }}
-        >
+        >  
           Designed by{" "}
-          <a href="/Mainpage1" style={{ color: "#eef7fd", fontSize:"20px",  textDecoration: "none" }}>
+          <a href="/Mainpage1" style={{ color: "#eef7fd", fontSize:"20px",textDecoration: "none" }}>
             Riddhi Chheta
           </a>
         </Typography>

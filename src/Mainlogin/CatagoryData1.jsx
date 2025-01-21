@@ -18,7 +18,7 @@ const CategoryData1 = () => {
   const fetchCategories = async () => {
     setLoading(true); // Set loading to true before fetching
     try {
-      const response = await axios.get("https://interviewhub-3ro7.onrender.com/catagory/", {
+      const response = await axios.get("https://interviewback-ucb4.onrender.com/category/", {
         headers: {
           Authorization: token,
         },
@@ -135,7 +135,7 @@ const CategoryData1 = () => {
                 filteredCategories.map((category, index) => (
                   <Grid item xs={12} sm={6} md={4} lg={3} key={category._id}>
                     <Box
-                      onClick={() => handleCategoryClick(category.catagoryName)}
+                      onClick={() => handleCategoryClick(category.categoryName)}
                       sx={{
                         background: "#eef7fd",
                         padding: "20px",
@@ -150,7 +150,7 @@ const CategoryData1 = () => {
                       }}
                     >
                       <Typography variant="h6" sx={{ color: "#124265" }}>
-                        {index + 1}. {category.catagoryName}
+                        {index + 1}. {category.categoryName}
                       </Typography>
                     </Box>
                   </Grid>

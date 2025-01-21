@@ -26,8 +26,8 @@ const Signup = () => {
 
   const SignupSchema = Yup.object().shape({
     password: Yup.string()
-      .min(5, "Too Short!")
-      .max(10, "Too Long!")
+      // .min(5, "Too Short!")
+      // .max(10, "Too Long!")
       .required("Required"),
     email: Yup.string().email("Invalid email").required("Required"),
   });
@@ -42,7 +42,7 @@ const Signup = () => {
       console.log("Submitting form values:", values);
       try {
         const response = await axios.post(
-          "https://interviewhub-3ro7.onrender.com/admin/signup",
+          "https://interviewback-ucb4.onrender.com/admin/signup",
           values
         );
         console.log("Signup successful:", response.data);
@@ -103,51 +103,102 @@ const Signup = () => {
 
         <form onSubmit={formik.handleSubmit}>
           {/* Email Field */}
-          <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
-          <Box sx={{ display: "flex", alignItems: "flex-end", mb: 3 }} >
-            <EmailIcon sx={{ color: "#333", mr: 1 }} />
-            <TextField
-              id="email"
-              name="email"
-              label="Email"
-              variant="standard"
-              type="email"
-              fullWidth
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.email && Boolean(formik.errors.email)}
-              helperText={formik.touched.email && formik.errors.email}
-            />
-          </Box>
-          </FormControl>
+          <FormControl variant="outlined" fullWidth sx={{ mb: 3 }}>
+  {/* Firstname Field */}
+  <TextField
+    id="firstname"
+    name="firstname"
+    label="Firstname"
+    variant="outlined"
+    type="text"
+    fullWidth
+    value={formik.values.firstname}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    error={formik.touched.firstname && Boolean(formik.errors.firstname)}
+    helperText={formik.touched.firstname && formik.errors.firstname}
+    sx={{ mb: 3 }}
+  />
 
-          {/* Password Field */}
-          <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
-            <TextField
-              id="password"
-              name="password"
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.password && Boolean(formik.errors.password)}
-              helperText={formik.touched.password && formik.errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
+  {/* Lastname Field */}
+  <TextField
+    id="lastname"
+    name="lastname"
+    label="Lastname"
+    variant="outlined"
+    type="text"
+    fullWidth
+    value={formik.values.lastname}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    error={formik.touched.lastname && Boolean(formik.errors.lastname)}
+    helperText={formik.touched.lastname && formik.errors.lastname}
+    sx={{ mb: 3 }}
+  />
+
+  {/* Contact Field */}
+  <TextField
+    id="contact"
+    name="contact"
+    label="Contact"
+    variant="outlined"
+    type="text"
+    fullWidth
+    value={formik.values.contact}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    error={formik.touched.contact && Boolean(formik.errors.contact)}
+    helperText={formik.touched.contact && formik.errors.contact}
+    sx={{ mb: 3 }}
+  />
+
+  {/* Email Field */}
+  <Box sx={{ display: "flex", alignItems: "flex-end", mb: 3 }}>
+    <TextField
+      id="email"
+      name="email"
+      label="Email"
+      variant="outlined"
+      type="email"
+      fullWidth
+      value={formik.values.email}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched.email && Boolean(formik.errors.email)}
+      helperText={formik.touched.email && formik.errors.email}
+    />
+  </Box>
+{/* </FormControl> */}
+
+{/* Password Field */}
+<Box variant="outlined" fullWidth sx={{ mb: 3 }}>
+  <TextField
+    id="password"
+    name="password"
+    label="Password"
+    type={showPassword ? "text" : "password"}
+    fullWidth
+    value={formik.values.password}
+    onChange={formik.handleChange}
+    onBlur={formik.handleBlur}
+    error={formik.touched.password && Boolean(formik.errors.password)}
+    helperText={formik.touched.password && formik.errors.password}
+    InputProps={{
+      endAdornment: (
+        <InputAdornment position="end">
+          <IconButton
+            onClick={handleClickShowPassword}
+            onMouseDown={handleMouseDownPassword}
+          >
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        </InputAdornment>
+      ),
+    }}
+  />
+  </Box>
+</FormControl>
+
 
           {/* Submit Button */}
           <Button

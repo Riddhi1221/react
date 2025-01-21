@@ -24,14 +24,14 @@ const Category = () => {
 
   const formik = useFormik({
     initialValues: {
-      catagoryName: "",
+      categoryName: "",
     },
     onSubmit: async (values, { resetForm }) => {
       try {
         let res;
         if (eid && eid.length) {
-          res = await axios.patch(
-            `https://interviewhub-3ro7.onrender.com/catagory/${eid}`,
+          console.log("Updating category:", values);
+          res = await axios.patch(`https://interviewback-ucb4.onrender.com/category/${eid}`,
             values,
             {
               headers: {
@@ -40,9 +40,8 @@ const Category = () => {
             }
           );
         } else {
-          res = await axios.post(
-            "https://interviewhub-3ro7.onrender.com/catagory/create",
-            values,
+          console.log("Create category:", values);
+          res = await axios.post( "https://interviewback-ucb4.onrender.com/category/create", values,
             {
               headers: {
                 Authorization: token,
@@ -73,28 +72,30 @@ const Category = () => {
 
   let dataFetch = async () => {
     try {
-      let res = await axios.get(
-        "https://interviewhub-3ro7.onrender.com/catagory/",
+      let res = await axios.get("https://interviewback-ucb4.onrender.com/category/",
         {
           headers: {
             Authorization: token,
           },
         }
       );
-  
-      // Sort categories by 'catagoryName' in ascending order
-      let sortedData = res.data.data.sort((a, b) => a.catagoryName.localeCompare(b.catagoryName));
-      setCategory(sortedData); // Update state with sorted categories
-      localStorage.setItem("category", JSON.stringify(sortedData.length));
+      console.log(res);
+      const dataFetch = res.data.data;
+      setCategory(dataFetch);
+      localStorage.setItem("category",dataFetch.length)
+      
+   
     } catch (error) {
       console.log(error);
     }
   };
   
-
+  // let sortedData = res.data.data.sort((a, b) => a.catagoryName.localeCompare(b.catagoryName));
+  // setCategory(sortedData);
+  // localStorage.setItem("category", JSON.stringify(sortedData.length));
   const searchCat = (values) => {
     axios
-      .get("https://interviewhub-3ro7.onrender.com/catagory/?search=" + values, {
+      .get("https://interviewback-ucb4.onrender.com/category/?search=" + values, {
         headers: {
           Authorization: token,
         },
@@ -124,7 +125,7 @@ const Category = () => {
     let findData = category.find((el) => el._id === id);
     try {
       await axios.patch(
-        `https://interviewhub-3ro7.onrender.com/catagory/${id}`,
+        `https://interviewback-ucb4.onrender.com/category/${id}`,
         { status: findData.status === "on" ? "off" : "on" },
         {
           headers: {
@@ -140,8 +141,7 @@ const Category = () => {
 
   async function deleteData(id) {
     try {
-      let res = await axios.delete(
-        `https://interviewhub-3ro7.onrender.com/catagory/${id}`,
+      let res = await axios.delete(`https://interviewback-ucb4.onrender.com/category/${id}`,
         {
           headers: {
             Authorization: token,
@@ -162,7 +162,6 @@ const Category = () => {
   return (
     <Drawer>
       <Grid container spacing={2} sx={{ p: 2 }}>
-        {/* Search and Add Category */}
         <Grid item xs={12} md={8}>
           <TextField
             label="Search category"
@@ -196,7 +195,7 @@ const Category = () => {
                 <TableCell component="th" scope="row" align="left">
                   {index + 1}
                 </TableCell>
-                <TableCell align="left">{row.catagoryName}</TableCell>
+                <TableCell align="left">{row.categoryName}</TableCell>
                 <TableCell align="left">
                   <Switch
                     checked={row.status === "on" ? true : false}
@@ -239,9 +238,9 @@ const Category = () => {
           <DialogContent>
             <TextField
               label="Category Name"
-              name="catagoryName"
+              name="categoryName"
               onChange={formik.handleChange}
-              value={formik.values.catagoryName}
+              value={formik.values.categoryName}
               fullWidth
             />
           </DialogContent>

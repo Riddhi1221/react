@@ -31,8 +31,8 @@ const Login = () => {
   // Validation schema for form
   const loginSchema = Yup.object().shape({
     password: Yup.string()
-      .min(8, "Too Short!")
-      .max(10, "Too Long!")
+      // .min(8, "Too Short!")
+      // .max(10, "Too Long!")
       .required("Password is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
   });
@@ -48,7 +48,7 @@ const Login = () => {
       setLoader(true);
       try {
         const response = await axios.post(
-          "https://interviewhub-3ro7.onrender.com/admin/login",
+          "https://interviewback-ucb4.onrender.com/admin/login",
           values
         );
         localStorage.setItem("Token", response.data.token);

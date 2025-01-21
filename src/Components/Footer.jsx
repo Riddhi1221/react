@@ -111,7 +111,7 @@ const Footer = () => {
           }}
         >
           Designed by{" "}
-          <a href="/" style={{ color: "#eef7fd", textDecoration: "none" }}>
+          <a href="/" style={{ color: "#eef7fd", fontSize:"20px", textDecoration: "none" }}>
             Riddhi Chheta
           </a>
         </Typography>

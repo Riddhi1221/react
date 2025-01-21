@@ -20,7 +20,7 @@ const SubcategoryData = () => {
     if (!token) {
       navigate("/login", { state: { redirectTo: "/SubcatagoryData" } });
     } else {
-      axios.get('https://interviewhub-3ro7.onrender.com/subcatagory/', {
+      axios.get('https://interviewback-ucb4.onrender.com/subcategory/', {
         headers: {
           Authorization: token,
         }
@@ -29,7 +29,7 @@ const SubcategoryData = () => {
           setAllSubcategories(res.data.data);
   
           if (category) {
-            const filter = res.data.data.filter((el) => el.catagoryID.catagoryName === category);
+            const filter = res.data.data.filter((el) => el.categoryID.categoryName === category);
             setFilteredSubcategories(filter);
           }
           setLoading(false); // Set loading to false after data is fetched
@@ -104,7 +104,7 @@ const SubcategoryData = () => {
                     <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
                       <Box
                         className="box"
-                        onClick={() => handleNavigation(item.subCatagoryname)}
+                        onClick={() => handleNavigation(item.subCategoryname)}
                         sx={{
                           background: "#eef7fd",
                           padding: "20px",
@@ -119,7 +119,7 @@ const SubcategoryData = () => {
                         }}
                       >
                         <Typography variant="h6" sx={{ color: "#124265" }}>
-                          {index + 1}. {item.subCatagoryname}
+                          {index + 1}. {item.subCategoryname}
                         </Typography>
                       </Box>
                     </Grid>
@@ -154,7 +154,7 @@ const SubcategoryData = () => {
                   <Grid item xs={12} sm={6} md={4} lg={3} key={item._id}>
                     <Box
                       className="box"
-                      onClick={() => handleNavigation(item.subCatagoryname)}
+                      onClick={() => handleNavigation(item.subCategoryname)}
                       sx={{
                         background: "#eef7fd",
                         padding: "20px",
@@ -169,7 +169,7 @@ const SubcategoryData = () => {
                       }}
                     >
                       <Typography variant="h6" sx={{ color: "#124265" }}>
-                        {index + 1}. {item.subCatagoryname}
+                        {index + 1}. {item.subCategoryname}
                       </Typography>
                     </Box>
                   </Grid>
