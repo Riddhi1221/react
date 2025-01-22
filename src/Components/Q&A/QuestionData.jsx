@@ -20,7 +20,7 @@ const QuestionData = () => {
     if (!token) {
       navigate("/login", { state: { redirectTo: "/QuestionData" } });
     } else {
-      axios.get('https://interviewhub-3ro7.onrender.com/questions/', {
+      axios.get('https://interviewback-ucb4.onrender.com/questions/', {
         headers: {
           Authorization: token,
         }
@@ -30,7 +30,7 @@ const QuestionData = () => {
           setAllQues(questions);
   
           if (subcategory) {
-            const filtered = questions.filter((el) => el.subcatagoryID.subCatagoryname === subcategory);
+            const filtered = questions.filter((el) => el.subcategoryID.subCategoryname === subcategory);
             setFilterQues(filtered);
           }
           setLoading(false);  // Set loading to false once the data is fetched
