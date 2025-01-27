@@ -81,7 +81,7 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "linear-gradient(135deg, #ff9a9e, #fecfef)",
+        background: "linear-gradient(135deg,rgb(47, 104, 184),rgb(129, 147, 173))",
         padding: 2,
       }}
     >
@@ -170,10 +170,10 @@ const Login = () => {
             sx={{
               py: 1.5,
               fontWeight: "bold",
-              background: "linear-gradient(90deg, #43cea2, #185a9d)",
+              background: "linear-gradient(90deg,rgb(144, 182, 213), #185a9d)",
               color: "#fff",
               "&:hover": {
-                background: "linear-gradient(90deg, #185a9d, #43cea2)",
+                background: "linear-gradient(90deg, #185a9d,rgb(144, 182, 213))",
               },
             }}
           >

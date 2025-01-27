@@ -473,7 +473,7 @@ const QA = () => {
     <Drawer>
       <Box sx={{ padding: 2 }}>
         <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
-          <Grid item xs={12} sm={8} md={10}>
+          <Grid item xs={12} sm={4} md={8}>
             <TextField
               label="Search Q&A"
               variant="outlined"
@@ -482,7 +482,7 @@ const QA = () => {
               onChange={(e) => setSearch(e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={4} md={2}>
+         <Grid item xs={12} sm={8} md={4}>
             <Button
               variant="contained"
               startIcon={<AddIcon />}

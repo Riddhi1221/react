@@ -51,7 +51,7 @@
 //             headers: { Authorization: token },
 //           });
 //         }
-        
+
 //         // Success message and actions
 //         toast.success(res.data.message);
 //         resetForm();
@@ -62,7 +62,7 @@
 //         console.error(error);
 //         toast.error("An error occurred while saving the subcategory.");
 //       }
-      
+
 //     },
 //   });
 
@@ -340,9 +340,9 @@ const SubCategory = () => {
       const res = await axios.get("https://interviewback-ucb4.onrender.com/subcategory/", {
         headers: { Authorization: token },
       });
-      const dataFetch=res.data.data;
+      const dataFetch = res.data.data;
       setSubCategory(dataFetch);
-      localStorage.setItem("subcategory",dataFetch.length)
+      localStorage.setItem("subcategory", dataFetch.length)
     } catch (error) {
       toast.error("Failed to fetch subcategories.");
     } finally {
@@ -423,8 +423,8 @@ const SubCategory = () => {
   return (
     <Drawer>
       <Box sx={{ padding: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={9}>
+        <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
+          <Grid item xs={12} sm={4} md={8}>
             <TextField
               fullWidth
               label="Search Subcategory"
@@ -433,7 +433,7 @@ const SubCategory = () => {
               onChange={handleSearch}
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item xs={12} sm={8} md={4}>
             <Button
               fullWidth
               variant="contained"

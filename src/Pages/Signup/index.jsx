@@ -8,14 +8,12 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import EmailIcon from "@mui/icons-material/Email";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useFormik } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import * as Yup from "yup";
-import Image from '../../images/bg.jpg';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -63,9 +61,9 @@ const Signup = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: `linear-gradient(135deg, rgba(255, 126, 95, 0.7), rgba(254, 180, 123, 0.7)), url(${Image})`, // Added background image
-        backgroundSize: 'cover', // Ensure it covers the whole screen
-        backgroundPosition: 'center', // Center the background
+        background: "linear-gradient(135deg,rgb(47, 104, 184),rgb(129, 147, 173))",
+        // backgroundSize: 'cover', // Ensure it covers the whole screen
+        // backgroundPosition: 'center', // Center the background
         overflow: "hidden",
         padding: 2,
       }}
@@ -76,8 +74,8 @@ const Signup = () => {
           p: { xs: 3, sm: 5 },
           borderRadius: 3,
           boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
-          backgroundColor: "rgba(255, 255, 255, 0.54)",
-          backdropFilter: "blur(10px)",
+          backgroundColor: "rgb(255, 255, 255)",
+          // backdropFilter: "blur(10px)",
           mx: { xs: 2, sm: 0 },
         }}
       >
@@ -204,20 +202,29 @@ const Signup = () => {
           <Button
             type="submit"
             variant="contained"
-            disabled={formik.isSubmitting}
+            disabled={formik.isSubmitting }
             sx={{
               width: "100%",
               py: 1.5,
               fontWeight: "bold",
               textTransform: "uppercase",
-              background: "linear-gradient(135deg, rgba(226, 212, 53, 0.63), rgba(225, 142, 79, 0.57))",
+              background: "linear-gradient(135deg, rgb(144, 182, 213), #185a9d)",
               color: "#fff",
-              boxShadow: "linear-gradient(135deg, rgba(255, 126, 95, 0.7), rgba(254, 180, 123, 0.7))",
+              boxShadow: "linear-gradient(135deg, #185a9d), rgb(144, 182, 213))",
               "&:hover": {
-                background: "linear-gradient(135deg, rgba(255, 126, 95, 0.7), rgba(254, 180, 123, 0.7))",
-                boxShadow: "linear-gradient(135deg, rgba(255, 126, 95, 0.7), rgba(254, 180, 123, 0.7))",
+                background: "linear-gradient(135deg, #185a9d), rgb(144, 182, 213))",
+                // boxShadow: "linear-gradient(135deg, rgba(255, 126, 95, 0.7), rgba(254, 180, 123, 0.7))",
               },
             }}
+            // sx={{
+            //   py: 1.5,
+            //   fontWeight: "bold",
+            //   background: "linear-gradient(90deg,rgb(144, 182, 213), #185a9d)",
+            //   color: "#fff",
+            //   "&:hover": {
+            //     background: "linear-gradient(90deg, #185a9d,rgb(144, 182, 213))",
+            //   },
+            // }}
           >
             {formik.isSubmitting ? "Signing up..." : "Sign Up"}
           </Button>
