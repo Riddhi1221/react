@@ -19,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import * as Yup from "yup";
 
 const Login = () => {
+  const Token = localStorage.getItem("Token");
   const [loader, setLoader] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
@@ -68,11 +69,10 @@ const Login = () => {
 
   // Redirect if already logged in
   useEffect(() => {
-    const Token = localStorage.getItem("Token");
     if (Token) {
       navigate("/dashboard");
     }
-  }, [navigate]);
+  }, [Token]);
 
   return (
     <Box

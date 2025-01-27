@@ -16,9 +16,9 @@ import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 
 const Dashboard = () => {
   const [cardData, setCardData] = useState([]);
-  const [loading, setLoading] = useState(true); // Loading state
+  const [loading, setLoading] = useState(true); 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("Token");
 
   useEffect(() => {
     if (!token) {
@@ -56,8 +56,8 @@ const Dashboard = () => {
     ];
 
     setCardData(updatedCardData);
-    setLoading(false); // Data is ready, stop loading
-  }, [token, navigate]);
+    setLoading(false); 
+  }, [token]);
 
   const pieChartData = cardData.map((item) => ({
     name: item.title,
