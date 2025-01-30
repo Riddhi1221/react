@@ -18,8 +18,6 @@ import { PieChart, Pie, Cell, Legend, ResponsiveContainer } from "recharts";
 const Dashboard = () => {
   const token = localStorage.getItem("Token");
   const [categoryCount, setCategoryCount] = useState(0);
-  console.log(categoryCount);
-  
   const [subcategoryCount, setSubcategoryCount] = useState(0);
   const [questionCount, setQuestionCount] = useState(0);
   const [loading, setLoading] = useState(true);

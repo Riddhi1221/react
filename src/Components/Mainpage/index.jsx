@@ -1,5 +1,5 @@
-import React from 'react';
-import Box from '@mui/material/Box';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Container, Grid } from '@mui/material';
@@ -15,12 +15,50 @@ import Footer from '../Footer';
 import { useNavigate } from 'react-router-dom'; 
 
 const Mainpage = () => {
+
+    const [categoryCount, setCategoryCount] = useState(0);
+    const [subcategoryCount, setSubcategoryCount] = useState(0);
+    const [questionCount, setQuestionCount] = useState(0);
+    const [loading, setLoading] = useState(true);
   const categoryData = localStorage.getItem("category") || 0;
   const subcategory = localStorage.getItem("subcategory") || 0;
   const question = localStorage.getItem("question") || 0;
 
   const navigate = useNavigate();
   const token = localStorage.getItem("Token"); 
+
+  useEffect(() => {
+   
+  
+      const fetchData = async () => {
+        setLoading(true);
+        try {
+          const categoryRes = await axios.get(
+            "https://interviewback-ucb4.onrender.com/category/count",
+            { headers: { Authorization: token } }          
+          );
+          console.log(categoryRes);
+          
+          const subcategoryRes = await axios.get(
+            "https://interviewback-ucb4.onrender.com/subcategory/count",
+            { headers: { Authorization: token } }
+          );
+          const questionRes = await axios.get(
+            "https://interviewback-ucb4.onrender.com/questions/count",
+            { headers: { Authorization: token } }
+          );
+  
+          setCategoryCount(categoryRes.data.data || 0);
+          setSubcategoryCount(subcategoryRes.data.data || 0);
+          setQuestionCount(questionRes.data.data || 0);
+        } catch (error) {
+          console.error("Failed to fetch data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchData();
+    }, [token]);
 
   const handleCardClick = (link) => {
     if (!token) {
