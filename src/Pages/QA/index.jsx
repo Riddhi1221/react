@@ -1,298 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import {
-//   Box,
-//   Button,
-//   Grid,
-//   TableCell,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   DialogTitle,
-//   TextField,
-//   Select,
-//   MenuItem,
-//   FormControl,
-//   InputLabel,
-//   CircularProgress,
-// } from "@mui/material";
-// import TableComponent from "../../Components/TableComponent";
-// import AddIcon from "@mui/icons-material/Add";
-// import EditIcon from "@mui/icons-material/Edit";
-// import DeleteIcon from "@mui/icons-material/Delete";
-// import axios from "axios";
-// import { ToastContainer, toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import Drawer from "../../Components/Drawer";
-
-// const QA = () => {
-//   const token = localStorage.getItem("Token");
-//   const [qaData, setQAData] = useState([]);
-//   const [categories, setCategories] = useState([]);
-//   const [subcategories, setSubcategories] = useState([]);
-//   const [search, setSearch] = useState("");
-//   const [dialogOpen, setDialogOpen] = useState(false);
-//   const [editMode, setEditMode] = useState(false);
-//   const [currentQA, setCurrentQA] = useState({
-//     id: null,
-//     questions: "",
-//     answer: "",
-//     subcategoryID: "",
-//   });
-//   const [loading, setLoading] = useState(true);  // Add loading state
-
-//   const tableHeaders = [
-//     "Index",
-//     "Questions",
-//     "Answer",
-//     "Subcategory",
-//     "Category",
-//     "Delete",
-//     "Update",
-//   ];
-
-//   // Fetch Q&A data
-//   const fetchQAData = async () => {
-//     setLoading(true);  // Start loading
-//     try {
-//       const res = await axios.get("https://interviewback-ucb4.onrender.com/questions/", {
-//         headers: { Authorization: token },
-//       });
-//       const fetchedData = res.data.data;
-//       setQAData(fetchedData);
-//       // Store the length of the fetched data in localStorage
-//       localStorage.setItem("question", fetchedData.length.toString());
-//       console.log("Fetched Q&A Data:", fetchedData); // Debugging log
-//     } catch (error) {
-//       console.error("Error fetching Q&A data:", error);
-//       toast.error("Failed to fetch Q&A data. Please try again later.");
-//     } finally {
-//       setLoading(false);  // End loading
-//     }
-//   };
-
-//   // Fetch categories and subcategories
-//   const fetchCategories = async () => {
-//     try {
-//       const res = await axios.get("https://interviewback-ucb4.onrender.com/category/", {
-//         headers: { Authorization: token },
-//       });
-//       setCategories(res.data.data);
-//     } catch (error) {
-//       console.error("Error fetching categories:", error);
-//       toast.error("Failed to fetch categories.");
-//     }
-//   };
-
-//   const fetchSubcategories = async () => {
-//     try {
-//       const res = await axios.get("https://interviewback-ucb4.onrender.com/subcategory/", {
-//         headers: { Authorization: token },
-//       });
-//       setSubcategories(res.data.data);
-//     } catch (error) {
-//       console.error("Error fetching subcategories:", error);
-//       toast.error("Failed to fetch subcategories.");
-//     }
-//   };
-
-//   const openDialog = (qa = null) => {
-//     setCurrentQA(
-//       qa
-//         ? {
-//             id: qa._id,
-//             questions: qa.questions,
-//             answer: qa.answer,
-//             subcategoryID: qa.subcategoryID,
-//           }
-//         : {
-//             id: null,
-//             questions: "",
-//             answer: "",
-//             subcategoryID: "",
-//           }
-//     );
-//     setEditMode(!!qa);
-//     setDialogOpen(true);
-//   };
-
-//   const closeDialog = () => {
-//     setDialogOpen(false);
-//     setCurrentQA({ id: null, questions: "", answer: "", subcategoryID: "" });
-//   };
-
-//   const handleSubmit = async () => {
-//     try {
-//       if (editMode) {
-//         await axios.patch(
-//           `https://https://interviewback-ucb4.onrender.com/questions/${currentQA.id}`,
-//           currentQA,
-//           { headers: { Authorization: token } }
-//         );
-//         toast.success("Q&A updated successfully!");
-//       } else {
-//         await axios.post(
-//           "https://interviewback-ucb4.onrender.com/questions/create",
-//           currentQA,
-//           { headers: { Authorization: token } }
-//         );
-//         toast.success("Q&A added successfully!");
-//       }
-//       fetchQAData();
-//       closeDialog();
-//     } catch (error) {
-//       console.error("Error submitting Q&A:", error);
-//       toast.error("Failed to submit Q&A. Please try again.");
-//     }
-//   };
-
-//   const handleDelete = async (id) => {
-//     try {
-//       await axios.delete(`https://interviewback-ucb4.onrender.com/questions/${id}`, {
-//         headers: { Authorization: token },
-//       });
-//       toast.success("Q&A deleted successfully!");
-//       fetchQAData();
-//     } catch (error) {
-//       console.error("Error deleting Q&A:", error);
-//       toast.error("Failed to delete Q&A. Please try again.");
-//     }
-//   };
-
-//   const filteredQAData = qaData.filter(
-//     (item) =>
-//       item.questions.toLowerCase().includes(search.toLowerCase()) ||
-//       item.answer.toLowerCase().includes(search.toLowerCase())
-//   );
-
-//   useEffect(() => {
-//     fetchQAData();
-//     fetchCategories();
-//     fetchSubcategories();
-//   }, []);
-
-//   return (
-//     <Drawer>
-//       <Box sx={{ padding: 2 }}>
-//         {/* Search and Add Button */}
-//         <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
-//           <Grid item xs={12} sm={8} md={10}>
-//             <TextField
-//               label="Search Q&A"
-//               variant="outlined"
-//               fullWidth
-//               value={search}
-//               onChange={(e) => setSearch(e.target.value)}
-//             />
-//           </Grid>
-//           <Grid item xs={12} sm={4} md={2}>
-//             <Button
-//               variant="contained"
-//               startIcon={<AddIcon />}
-//               fullWidth
-//               onClick={() => openDialog()}
-//               sx={{ backgroundColor: "#79797a" }}
-//             >
-//               Add Q&A
-//             </Button>
-//           </Grid>
-//         </Grid>
-
-//         {/* Loading Spinner */}
-//         {loading ? (
-//           <Box sx={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-//             <CircularProgress />
-//           </Box>
-//         ) : (
-//           <>
-//             {/* Q&A Table */}
-//             <TableComponent
-//               TableHeader={tableHeaders}
-//               TableData={filteredQAData}
-//               renderRow={(row, index) => (
-//                 <>
-//                   <TableCell>{index + 1}</TableCell>
-//                   <TableCell>{row.questions}</TableCell>
-//                   <TableCell>{row.answer}</TableCell>
-//                   <TableCell>{row.subcategoryID?.subCategoryname}</TableCell>
-//                   <TableCell>{row.subcategoryID?.categoryID?.categoryName}</TableCell>
-//                   <TableCell>
-//                     <Button
-//                       variant="contained"
-//                       color="error"
-//                       onClick={() => handleDelete(row._id)}
-//                     >
-//                       <DeleteIcon />
-//                     </Button>
-//                   </TableCell>
-//                   <TableCell>
-//                     <Button
-//                       variant="contained"
-//                       color="success"
-//                       onClick={() => openDialog(row)}
-//                     >
-//                       <EditIcon />
-//                     </Button>
-//                   </TableCell>
-//                 </>
-//               )}
-//             />
-//           </>
-//         )}
-//       </Box>
-
-//       {/* Add/Edit Dialog */}
-//       <Dialog open={dialogOpen} onClose={closeDialog}>
-//         <DialogTitle>{editMode ? "Edit Q&A" : "Add Q&A"}</DialogTitle>
-//         <DialogContent>
-//           <TextField
-//             fullWidth
-//             label="Question"
-//             value={currentQA.questions}
-//             onChange={(e) =>
-//               setCurrentQA((prev) => ({ ...prev, questions: e.target.value }))
-//             }
-//             margin="normal"
-//           />
-//           <TextField
-//             fullWidth
-//             label="Answer"
-//             value={currentQA.answer}
-//             onChange={(e) =>
-//               setCurrentQA((prev) => ({ ...prev, answer: e.target.value }))
-//             }
-//             margin="normal"
-//           />
-//           <FormControl fullWidth margin="normal">
-//             <InputLabel>Subcategory</InputLabel>
-//             <Select
-//               value={currentQA.subcategoryID}
-//               onChange={(e) =>
-//                 setCurrentQA((prev) => ({ ...prev, subcategoryID: e.target.value }))
-//               }
-//             >
-//               {subcategories.map((sub) => (
-//                 <MenuItem key={sub._id} value={sub._id}>
-//                   {sub.subCategoryname}
-//                 </MenuItem>
-//               ))}
-//             </Select>
-//           </FormControl>
-//         </DialogContent>
-//         <DialogActions>
-//           <Button onClick={closeDialog}>Cancel</Button>
-//           <Button onClick={handleSubmit} variant="contained" color="primary">
-//             Submit
-//           </Button>
-//         </DialogActions>
-//       </Dialog>
-
-//       <ToastContainer />
-//     </Drawer>
-//   );
-// };
-
-// export default QA;
-
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -471,35 +176,55 @@ const QA = () => {
 
   return (
     <Drawer>
-      <Box sx={{ padding: 2 }}>
-        <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
-          <Grid item xs={12} sm={4} md={8}>
-            <TextField
-              label="Search Q&A"
-              variant="outlined"
-              fullWidth
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </Grid>
-         <Grid item xs={12} sm={8} md={4}>
-            <Button
-              variant="contained"
-              startIcon={<AddIcon />}
-              fullWidth
-              onClick={() => openDialog()}
-              sx={{ backgroundColor: "#79797a" }}
-            >
-              Add Q&A
-            </Button>
-          </Grid>
+    <Box
+      sx={{
+        minHeight: "100vh", // Ensures full height of the viewport
+        // width: "100vw",     // Ensures full width of the viewport
+        backgroundColor: "#f4f4f4", // Background color
+        display: "flex",    // Flexbox to align content
+        flexDirection: "column", // Align items vertically
+        padding: 2,
+      }}
+    >
+      <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
+        <Grid item xs={12} sm={4} md={8}>
+          <TextField
+            label="Search Q&A"
+            variant="outlined"
+            fullWidth
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
         </Grid>
-
-        {loading ? (
-          <Box sx={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-            <CircularProgress />
-          </Box>
-        ) : (
+        <Grid item xs={12} sm={8} md={4}>
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            fullWidth
+            onClick={() => openDialog()}
+            sx={{ backgroundColor: "#79797a" }}
+          >
+            Add Q&A
+          </Button>
+        </Grid>
+      </Grid>
+  
+      {loading ? (
+        <Box sx={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box
+          sx={{
+            width: "100%",
+            backgroundColor: "#ffffff",
+            padding: 2,
+            borderRadius: "8px",
+            boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+            marginTop: 2,
+            flexGrow: 1, // Pushes footer down if present
+          }}
+        >
           <TableComponent
             TableHeader={tableHeaders}
             TableData={filteredQAData}
@@ -527,56 +252,59 @@ const QA = () => {
               </>
             )}
           />
-        )}
-      </Box>
-
-      <Dialog open={dialogOpen} onClose={closeDialog}>
-        <DialogTitle>{editMode ? "Edit Q&A" : "Add Q&A"}</DialogTitle>
-        <DialogContent>
-          <TextField
-            fullWidth
-            label="Question"
-            value={currentQA.questions}
+        </Box>
+      )}
+    </Box>
+  
+    <Dialog open={dialogOpen} onClose={closeDialog}>
+      <DialogTitle>{editMode ? "Edit Q&A" : "Add Q&A"}</DialogTitle>
+      <DialogContent>
+        <TextField
+          fullWidth
+          label="Question"
+          value={currentQA.questions}
+          onChange={(e) =>
+            setCurrentQA((prev) => ({ ...prev, questions: e.target.value }))
+          }
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          label="Answer"
+          value={currentQA.answer}
+          onChange={(e) =>
+            setCurrentQA((prev) => ({ ...prev, answer: e.target.value }))
+          }
+          margin="normal"
+        />
+        <FormControl fullWidth margin="normal">
+          <InputLabel>Subcategory</InputLabel>
+          <Select
+            value={currentQA.subcategoryID}
             onChange={(e) =>
-              setCurrentQA((prev) => ({ ...prev, questions: e.target.value }))
+              setCurrentQA((prev) => ({ ...prev, subcategoryID: e.target.value }))
             }
-            margin="normal"
-          />
-          <TextField
-            fullWidth
-            label="Answer"
-            value={currentQA.answer}
-            onChange={(e) =>
-              setCurrentQA((prev) => ({ ...prev, answer: e.target.value }))
-            }
-            margin="normal"
-          />
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Subcategory</InputLabel>
-            <Select
-              value={currentQA.subcategoryID}
-              onChange={(e) =>
-                setCurrentQA((prev) => ({ ...prev, subcategoryID: e.target.value }))
-              }
-            >
-              {subcategories.map((sub) => (
-                <MenuItem key={sub._id} value={sub._id}>
-                  {sub.subCategoryname}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={closeDialog}>Cancel</Button>
-          <Button onClick={handleSubmit} variant="contained" color="primary">
-            Submit
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <ToastContainer />
-    </Drawer>
+          >
+            {subcategories.map((sub) => (
+              <MenuItem key={sub._id} value={sub._id}>
+                {sub.subCategoryname}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={closeDialog}>Cancel</Button>
+        <Button onClick={handleSubmit} variant="contained" color="primary">
+          Submit
+        </Button>
+      </DialogActions>
+    </Dialog>
+  
+    <ToastContainer />
+  </Drawer>
+  
+  
   );
 };
 

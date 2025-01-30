@@ -421,6 +421,12 @@ const Category = () => {
 
   return (
     <Drawer>
+      <Box sx={{ padding: 2 ,flexGrow: 1, 
+        minHeight: "100vh", 
+        backgroundColor: "#f4f4f4",
+        display: "flex",    
+        flexDirection: "column"}}
+        >
       <Grid container spacing={2} sx={{ p: 2 }}>
         <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
           <Grid item xs={12} sm={4} md={8}>
@@ -493,6 +499,7 @@ const Category = () => {
           )}
         </Grid>
       </Grid>
+      </Box>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
         <DialogTitle>{eid ? "Update Category" : "Add Category"}</DialogTitle>

@@ -422,7 +422,11 @@ const SubCategory = () => {
 
   return (
     <Drawer>
-      <Box sx={{ padding: 2 }}>
+      <Box sx={{ padding: 2 ,flexGrow: 1, 
+        minHeight: "100vh", 
+        backgroundColor: "#f4f4f4",
+        display: "flex",    
+        flexDirection: "column"}}>
         <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
           <Grid item xs={12} sm={4} md={8}>
             <TextField
