@@ -391,15 +391,16 @@ const SubCategory = () => {
   const switchToggle = async (id) => {
     const findData = subcategory.find((el) => el._id === id);
     try {
-      await axios.patch(
-        `https://interviewback-ucb4.onrender.com/subcategory/${id}`,
-        { status: findData.status === "on" ? "off" : "on" },
-        { headers: { Authorization: token } }
-      );
-      dataFetch();
-    } catch (error) {
-      console.error(error);
-    }
+    await axios.patch(
+      "https://interviewback-ucb4.onrender.com/subcategory/${id}",
+      { status: findData.status === "on" ? "off" : "on" },
+      { headers: { Authorization: token } }
+    );
+    dataFetch();
+  } catch (error) {
+    console.error(error);
+    }
+
   };
 
   const deleteData = async (id) => {
@@ -464,21 +465,21 @@ const SubCategory = () => {
               TableData={subcategory}
               renderRow={(row, index) => (
                 <>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{row.subCategoryname}</TableCell>
-                  <TableCell>{row.categoryID?.categoryName}</TableCell>
-                  <TableCell>
+                  <TableCell align="center">{index + 1}</TableCell>
+                  <TableCell align="center">{row.subCategoryname}</TableCell>
+                  <TableCell align="center">{row.categoryID?.categoryName}</TableCell>
+                  <TableCell align="center">
                     <Switch
                       checked={row.status === "on"}
                       onChange={() => switchToggle(row._id)}
                     />
-                  </TableCell>
-                  <TableCell>
+                  </TableCell>
+                  <TableCell align="center">
                     <Button variant="contained" color="error" onClick={() => deleteData(row._id)}>
                       <DeleteIcon />
                     </Button>
                   </TableCell>
-                  <TableCell>
+                  <TableCell align="center">
                     <Button variant="contained" color="success" onClick={() => updateData(row._id)}>
                       <EditIcon />
                     </Button>

@@ -139,6 +139,43 @@ const Category = () => {
     }
   };
 
+  const handleSwitchToggle = async (id) => {
+    const categoryToToggle = category.find((cat) => cat._id === id);
+    const newStatus = categoryToToggle.status === "on" ? "off" : "on";
+
+    try {
+
+      await axios.patch(
+        "https://interviewback-ucb4.onrender.com/category/${id}",
+        { status: newStatus },
+        { headers: { Authorization: token } }
+      );
+
+
+      const subcategoryRes = await axios.get("https://interviewback-ucb4.onrender.com/subcategory/", {
+        headers: { Authorization: token },
+      });
+
+      const relatedSubcategories = subcategoryRes.data.data.filter(
+        (sub) => sub.categoryID?._id === id
+      );
+
+
+      for (const sub of relatedSubcategories) {
+        await axios.patch(
+          "https://interviewback-ucb4.onrender.com/subcategory/${sub._id}",
+          { status: newStatus },
+          { headers: { Authorization: token } }
+        );
+      }
+
+      dataFetch();
+    } catch (error) {
+      toast.error("Failed to toggle status");
+      console.error(error);
+    }
+  };
+
   const deleteData = async (id) => {
     try {
       let res = await axios.delete(`https://interviewback-ucb4.onrender.com/category/${id}`, {
@@ -159,84 +196,86 @@ const Category = () => {
 
   return (
     <Drawer>
-      <Box sx={{ padding: 2 ,flexGrow: 1, 
-        minHeight: "100vh", 
+      <Box sx={{
+        padding: 2, flexGrow: 1,
+        minHeight: "100vh",
         backgroundColor: "#f4f4f4",
-        display: "flex",    
-        flexDirection: "column"}}
-        >
-      <Grid container spacing={2} sx={{ p: 2 }}>
-        <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
-          <Grid item xs={12} sm={4} md={8}>
-            <TextField
-              label="Search category"
-              variant="outlined"
-              value={search}
-              onChange={handleSearch}
-              fullWidth
-            />
+        display: "flex",
+        flexDirection: "column"
+      }}
+      >
+        <Grid container spacing={2} sx={{ p: 2 }}>
+          <Grid container spacing={2} alignItems="center" sx={{ marginBottom: 2 }}>
+            <Grid item xs={12} sm={4} md={8}>
+              <TextField
+                label="Search category"
+                variant="outlined"
+                value={search}
+                onChange={handleSearch}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={8} md={4} sx={{ display: "flex", justifyContent: "end" }}>
+              <Button
+                fullWidth
+                variant="contained"
+                startIcon={<AddIcon />}
+                sx={{ backgroundColor: "#79797a" }}
+                onClick={() => {
+                  setEid(null);
+                  setOpen(true);
+                }}
+              >
+                Add Category
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={8} md={4} sx={{display:"flex", justifyContent:"end"}}>
-            <Button
-             fullWidth
-              variant="contained"
-              startIcon={<AddIcon />}
-              sx={{ backgroundColor: "#79797a" }}
-              onClick={() => {
-                setEid(null);
-                setOpen(true);
-              }}
-            >
-              Add Category
-            </Button>
-          </Grid>
-        </Grid>
 
-        <Grid item xs={12}>
-          {loading ? ( // Show loader while fetching data
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <TableComponent
-              TableHeader={TableHeader}
-              TableData={category}
-              renderRow={(row, index) => (
-                <>
-                  <TableCell component="th" scope="row" align="left">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell align="left">{row.categoryName}</TableCell>
-                  <TableCell align="left">
-                    <Switch
-                      checked={row.status === "on" ? true : false}
-                      onClick={() => switchToggle(row._id)}
-                    />
-                  </TableCell>
-                  <TableCell align="left">
-                    <Button
-                      variant="contained"
-                      onClick={() => deleteData(row._id)}
-                      sx={{ backgroundColor: "red" }}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Button
-                      variant="contained"
-                      onClick={() => updateData(row._id)}
-                      sx={{ backgroundColor: "green" }}
-                    >
-                      <EditIcon />
-                    </Button>
-                  </TableCell>
-                </>
-              )}
-            />
-          )}
+          <Grid item xs={12}>
+            {loading ? ( // Show loader while fetching data
+              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "50vh" }}>
+                <CircularProgress />
+              </Box>
+            ) : (
+              <TableComponent
+                TableHeader={TableHeader}
+                TableData={category}
+                renderRow={(row, index) => (
+                  <>
+                    <TableCell component="th" scope="row" align="center">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell align="center">{row.categoryName}</TableCell>
+                    <TableCell align="center">
+                      <Switch
+                        checked={row.status === "on"}
+                        onChange={() => switchToggle(row._id)}
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        onClick={() => deleteData(row._id)}
+                        sx={{ backgroundColor: "red" }}
+                      >
+                        <DeleteIcon />
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button
+                        variant="contained"
+                        onClick={() => updateData(row._id)}
+                        sx={{ backgroundColor: "green" }}
+                      >
+                        <EditIcon />
+                      </Button>
+                    </TableCell>
+                  </>
+                )}
+              />
+            )}
+          </Grid>
         </Grid>
-      </Grid>
       </Box>
 
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">

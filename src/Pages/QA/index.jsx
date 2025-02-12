@@ -230,17 +230,17 @@ const QA = () => {
             TableData={filteredQAData}
             renderRow={(row, index) => (
               <>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{row.questions}</TableCell>
-                <TableCell>{row.answer}</TableCell>
-                <TableCell>{row.subcategoryID?.subCategoryname || "N/A"}</TableCell>
-                <TableCell>{row.subcategoryID?.categoryID?.categoryName}</TableCell>
-                <TableCell>
+                <TableCell align="center">{index + 1}</TableCell>
+                <TableCell align="center">{row.questions}</TableCell>
+                <TableCell align="center">{row.answer}</TableCell>
+                <TableCell align="center">{row.subcategoryID?.subCategoryname || "N/A"}</TableCell>
+                <TableCell align="center">{row.subcategoryID?.categoryID?.categoryName}</TableCell>
+                <TableCell align="center">
                   <Button variant="contained" color="error" onClick={() => handleDelete(row._id)}>
                     <DeleteIcon />
                   </Button>
-                </TableCell>
-                <TableCell>
+                </TableCell >
+                <TableCell align="center">
                   <Button
                     variant="contained"
                     color="success"
